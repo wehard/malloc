@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:05:16 by wkorande          #+#    #+#             */
-/*   Updated: 2020/08/24 17:01:17 by wkorande         ###   ########.fr       */
+/*   Updated: 2020/08/24 21:43:22 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 
 void ft_free(void *ptr)
 {
-	char state;
-
+	t_block_header *header;
+	
 	if (!ptr)
 		return ;
-	ptr -= sizeof(int) + 1;
-	state = *(char*)(ptr);
-	if (state == USED)
-		*(char*)ptr = FREE;
+	header = ptr - sizeof(t_block_header);
+	if (header->state == USED)
+		header->state = FREE;
 	else
 		ft_printf("malloc: pointer being freed was not allocated!\n");
 }

@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:58 by wkorande          #+#    #+#             */
-/*   Updated: 2020/08/24 16:17:03 by wkorande         ###   ########.fr       */
+/*   Updated: 2020/08/24 22:43:19 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 
 typedef enum	e_alloc_area
 {
-	TINY = 2,
+	TINY = 1,
 	SMALL = 4,
 	LARGE = 8
 }				t_alloc_area;
@@ -40,11 +40,11 @@ typedef struct	s_allocation
 	size_t		size;
 }				t_allocation;
 
-typedef struct	s_block
+typedef struct	s_block_header
 {
-	int	state;
+	char		state;
 	size_t		size;
-}				t_block;
+}				t_block_header;
 
 typedef struct	s_malloc
 {
