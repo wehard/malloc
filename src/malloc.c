@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:29 by wkorande          #+#    #+#             */
-/*   Updated: 2020/08/24 17:07:01 by wkorande         ###   ########.fr       */
+/*   Updated: 2020/08/24 17:16:44 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,12 @@ int main(void)
 	p2 = ft_malloc(32);
 	show_alloc_mem();
 
-	ft_strcpy(p, "hello");
-	ft_printf("%s\n", (char*)p);
+	ft_free(p1);
+	p1 = ft_malloc(8);
+	show_alloc_mem();
+
+	// ft_strcpy(p, "hello");
+	// ft_printf("%s\n", (char*)p);
 
 	return (0);
 }
