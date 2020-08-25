@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:58 by wkorande          #+#    #+#             */
-/*   Updated: 2020/08/24 22:43:19 by wkorande         ###   ########.fr       */
+/*   Updated: 2020/08/26 00:18:39 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 // # define LARGE 8
 # define NUM_TINY 100
 
+# define END -1
 # define FREE 0
 # define USED 1
 
@@ -51,6 +52,7 @@ typedef struct	s_malloc
 	int			initialized;
 	int			page_size;
 	size_t		tiny_size;
+	size_t		tiny_left;
 	size_t		small_size;
 	size_t		large_size;
 	t_allocation tiny_allocs[NUM_TINY];
