@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:29 by wkorande          #+#    #+#             */
-/*   Updated: 2020/08/26 00:21:54 by wkorande         ###   ########.fr       */
+/*   Updated: 2020/08/26 21:39:31 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void show_alloc_mem(void)
 
 	ft_printf("TINY : %p\n", g_malloc.tiny_data);
 	ptr = g_malloc.tiny_data;
-	while (ptr < (char *)(g_malloc.tiny_data + 128 /*g_malloc.tiny_size*/))
+	while (ptr < (char *)(g_malloc.tiny_data + 64 /*g_malloc.tiny_size*/))
 	{
 		t_block_header *header = (t_block_header *)ptr;
 		// while (header->state == FREE && header->size == 0)
@@ -85,7 +85,7 @@ void *ft_malloc(size_t size)
 		}
 		if (header->state == FREE)
 		{
-			if (header->size > size + sizeof(t_block_header))
+			if (header->size > (char)size + (char)sizeof(t_block_header))
 			{
 				// we can partition the block of memory
 				ft_printf("partitioning\n");
@@ -94,7 +94,7 @@ void *ft_malloc(size_t size)
 			int remaining_size = header->size - sizeof(t_block_header) - size;
 			header->state = USED;
 			header->size = size;
-			ft_printf("%*s[%d:%d][%0*d%s\n", ptr - (char *)g_malloc.tiny_data, "", header->state, header->size, header->size, 0, "]");
+			ft_printf("%*s[%d:%d][%0*d%s\n", ptr - (char *)g_malloc.tiny_data + (ptr - (char *)g_malloc.tiny_data) / 2, "", header->state, header->size, header->size, 0, "]");
 			ptr += sizeof(t_block_header);
 			t_block_header *tmp = (t_block_header *)(ptr + header->size);
 			if (remaining_size > 1)
@@ -130,13 +130,15 @@ int main(void)
 	ft_strcpy(c, "ccc");
 	
 	ft_free(b);
-	b = ft_malloc(8);
+	b = ft_malloc(2);
 	ft_strcpy(b, "xxx");
 	show_alloc_mem();
+
+	print_memory(a, 24);
 	// ft_free(p);
 	// show_alloc_mem();
 
 	// ft_printf("%s\n", (char*)p);
-
+	
 	return (0);
 }

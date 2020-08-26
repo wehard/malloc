@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:58 by wkorande          #+#    #+#             */
-/*   Updated: 2020/08/26 00:18:39 by wkorande         ###   ########.fr       */
+/*   Updated: 2020/08/26 21:39:00 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct	s_allocation
 typedef struct	s_block_header
 {
 	char		state;
-	size_t		size;
+	char		size;
 }				t_block_header;
 
 typedef struct	s_malloc
@@ -64,6 +64,7 @@ typedef struct	s_malloc
 void			*ft_malloc(size_t size);
 void			*ft_realloc(void *ptr, size_t size);
 void			ft_free(void *ptr);
-void			show_alloc_mem();;
+void			show_alloc_mem();
+void			print_memory(const void *addr, size_t size);
 
 #endif

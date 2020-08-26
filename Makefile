@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2020/08/24 16:54:23 by wkorande         ###   ########.fr        #
+#    Updated: 2020/08/26 21:39:44 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ SRCDIR = src
 
 SRC = malloc.c\
 		free.c\
-		realloc.c
+		realloc.c\
+		print_memory.c
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRC))
 
