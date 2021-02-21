@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:58 by wkorande          #+#    #+#             */
-/*   Updated: 2020/08/26 21:39:00 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/21 23:54:40 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 // # define SMALL 4
 // # define LARGE 8
 # define NUM_TINY 100
+# define NUM_SMALL 100
+# define NUM_LARGE 100
 
 # define END -1
 # define FREE 0
@@ -33,19 +35,13 @@ typedef enum	e_alloc_area
 	LARGE = 8
 }				t_alloc_area;
 
-typedef struct	s_allocation
+typedef struct		s_block
 {
-	int state;
-	t_alloc_area area;
-	void		*ptr;
-	size_t		size;
-}				t_allocation;
-
-typedef struct	s_block_header
-{
-	char		state;
-	char		size;
-}				t_block_header;
+	t_alloc_area	area;
+	int 			free;
+	size_t			size;
+	struct s_block *next;
+}					t_block;
 
 typedef struct	s_malloc
 {
@@ -55,8 +51,8 @@ typedef struct	s_malloc
 	size_t		tiny_left;
 	size_t		small_size;
 	size_t		large_size;
-	t_allocation tiny_allocs[NUM_TINY];
-	void		*tiny_data;
+	t_block		*blocks;
+	void		*data;
 	void		*small_data;
 	void		*large_data;
 }				t_malloc;

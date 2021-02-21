@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/26 21:23:28 by wkorande          #+#    #+#             */
-/*   Updated: 2020/08/26 21:49:21 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/21 22:34:38 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,7 @@ void	print_memory(const void *addr, size_t size)
 	i = 0;
 	while (i < size)
 	{
-		ft_printf("%c", ptr[i]);
-		if (i % 5 == 0)
-			ft_printf(" ");
-		if (i % 8 == 0)
-			ft_printf("\n");
+		ft_printf("%02hhX ", ptr[i]);
 		i++;
 	}
 }

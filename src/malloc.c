@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:29 by wkorande          #+#    #+#             */
-/*   Updated: 2020/08/26 21:39:31 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/21 23:54:33 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,96 +22,90 @@
 
 t_malloc g_malloc;
 
+
 void show_alloc_mem(void)
 {
-	char *ptr;
+	t_block *cur;
 
-	ft_printf("TINY : %p\n", g_malloc.tiny_data);
-	ptr = g_malloc.tiny_data;
-	while (ptr < (char *)(g_malloc.tiny_data + 64 /*g_malloc.tiny_size*/))
+	cur = g_malloc.blocks;
+
+	ft_printf("TINY : %p\n", g_malloc.data);
+
+	while (cur)
 	{
-		t_block_header *header = (t_block_header *)ptr;
-		// while (header->state == FREE && header->size == 0)
-		// 	ptr++;
-		ft_printf("%d ", sizeof(t_block_header));
-		char *block_start = ptr + sizeof(t_block_header);
-		char *block_end = block_start + header->size;
-		ft_printf("%p - %p : %d\t%s ", block_start, block_end, (block_end - block_start), header->state == USED ? "USED" : "FREE");
-		int i = 0;
-		while (i < (int)header->size)
+		ft_printf("%p - %p : %d\t%s ", cur + sizeof(t_block), cur + sizeof(t_block) + cur->size, cur->size, cur->free == FALSE ? "USED" : "FREE");
+			int i = 0;
+		while (i < (int)cur->size)
 		{
-			ft_putchar(block_start[i]);
+			ft_putchar(*((char*)cur + sizeof(t_block) + i));
 			i++;
 		}
 		ft_putchar('\n');
-		ptr += sizeof(t_block_header) + header->size;
+		cur = cur->next;
 	}
 }
 
 void init_malloc()
 {
 	g_malloc.page_size = getpagesize();
-	ft_printf("page size: %d\n", g_malloc.page_size);
-	g_malloc.tiny_size = TINY * g_malloc.page_size;
-	g_malloc.tiny_left = g_malloc.tiny_size;
-	g_malloc.tiny_data = mmap(0, g_malloc.tiny_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-	int i = 0;
-	ft_bzero(g_malloc.tiny_data, g_malloc.tiny_size);
-	while (i < NUM_TINY)
-	{
-		g_malloc.tiny_allocs[i].state = FREE;
-		g_malloc.tiny_allocs[i].area = TINY;
-		g_malloc.tiny_allocs[i].ptr = NULL;
-		g_malloc.tiny_allocs[i].size = 0;
-		i++;
-	}
+
+	size_t data_size = g_malloc.page_size;
+
+	g_malloc.data = mmap(0, data_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+	g_malloc.blocks = g_malloc.data;
+	g_malloc.blocks->size = data_size - sizeof(t_block);
+	g_malloc.blocks->free = TRUE;
+	g_malloc.blocks->next = NULL;
+
 	g_malloc.initialized = TRUE;
+
+	ft_printf("initialized (%d bytes)\n", data_size);
+}
+
+void split_block(t_block *cur, size_t size)
+{
+	t_block *free_block;
+
+	free_block = (void*)cur + size + sizeof(t_block);
+	free_block->size = cur->size - size - sizeof(t_block);
+	free_block->next = cur->next;
+	free_block->free = TRUE;
+
+	cur->size =  size;
+	cur->free = FALSE;
+	cur->next = free_block;
 }
 
 void *ft_malloc(size_t size)
 {
-	char *ptr;
-
-	if (g_malloc.initialized == FALSE)
+	t_block *cur;
+	t_block *prev;
+	
+	if (!g_malloc.initialized)
 		init_malloc();
-	if (size < g_malloc.tiny_left - sizeof(t_block_header))
+
+	cur = g_malloc.blocks;
+
+	while ((cur->size < size || cur->free == FALSE) && cur->next != NULL)
 	{
-		ptr = (char *)g_malloc.tiny_data;
-		t_block_header *header = (t_block_header *)ptr;
-		while (header->state == USED || (header->state == FREE && header->size > 0 && size > header->size + sizeof(t_block_header)))
-		{
-			ptr += sizeof(t_block_header) + header->size;
-			header = (t_block_header *)ptr;
-		}
-		if (header->state == FREE)
-		{
-			if (header->size > (char)size + (char)sizeof(t_block_header))
-			{
-				// we can partition the block of memory
-				ft_printf("partitioning\n");
-			}
-			int prev_size = header->size;
-			int remaining_size = header->size - sizeof(t_block_header) - size;
-			header->state = USED;
-			header->size = size;
-			ft_printf("%*s[%d:%d][%0*d%s\n", ptr - (char *)g_malloc.tiny_data + (ptr - (char *)g_malloc.tiny_data) / 2, "", header->state, header->size, header->size, 0, "]");
-			ptr += sizeof(t_block_header);
-			t_block_header *tmp = (t_block_header *)(ptr + header->size);
-			if (remaining_size > 1)
-			{
-				tmp->state = FREE;
-				tmp->size = prev_size - size;
-			}
-			// else
-			// 	ft_bzero(tmp, sizeof(t_block_header) + remaining_size);
-			// ft_printf("allocated tiny: %d bytes at %p\n", size, ptr);
-			return (ptr);
-		}
-		else
-			ft_printf("something went wrong\n");
+		prev = cur;
+		cur = cur->next;
 	}
-	size = 0;
-	return (NULL);
+	if (cur->size == size)
+	{
+		cur->free = FALSE;
+		return (cur + 1);
+	}
+	else if (cur->size > size + sizeof(t_block))
+	{
+		split_block(cur, size);
+		return (cur + 1);
+	}
+	else
+	{
+		ft_printf("Failed to allocate memory!\n");
+		return (NULL);
+	}
 }
 
 int main(void)
@@ -120,25 +114,18 @@ int main(void)
 	void *b;
 	void *c;
 
-	a = ft_malloc(8);
-	ft_strcpy(a, "aaa");
+	a = ft_malloc(2);
+	ft_strcpy(a, "..");
 
-	b = ft_malloc(8);
-	ft_strcpy(b, "bbb");
-
-	c = ft_malloc(8);
-	ft_strcpy(c, "ccc");
-	
-	ft_free(b);
 	b = ft_malloc(2);
-	ft_strcpy(b, "xxx");
+	ft_strcpy(b, "xx");
+
+	c = ft_malloc(20);
+	ft_strcpy(c, "!!");
+	
 	show_alloc_mem();
 
 	print_memory(a, 24);
-	// ft_free(p);
-	// show_alloc_mem();
-
-	// ft_printf("%s\n", (char*)p);
 	
 	return (0);
 }
