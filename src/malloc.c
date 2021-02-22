@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:29 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/22 17:09:55 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/22 18:19:52 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void init_malloc()
 	ft_printf("initialized (%d bytes)\n", tiny_total_size + small_total_size);
 }
 
-void split_block(t_block *cur, size_t size)
+void *split_block(t_block *cur, size_t size)
 {
 	t_block *free_block;
 
@@ -57,10 +57,13 @@ void split_block(t_block *cur, size_t size)
 	free_block->size = cur->size - size - sizeof(t_block);
 	free_block->next = cur->next;
 	free_block->free = TRUE;
+	free_block->data = NULL;
 
 	cur->size =  size;
 	cur->free = FALSE;
+	cur->data = (void*)cur + sizeof(t_block);
 	cur->next = free_block;
+	return (cur);
 }
 
 void *allocate_area(size_t size, void *area)
@@ -78,12 +81,13 @@ void *allocate_area(size_t size, void *area)
 	if (cur->size == size)
 	{
 		cur->free = FALSE;
-		return (cur + 1);
+		cur->data = (void*)cur + sizeof(t_block);
+		return (cur->data);
 	}
 	else if (cur->size > size + sizeof(t_block))
 	{
-		split_block(cur, size);
-		return (cur + 1);
+		cur = split_block(cur, size);
+		return (cur->data);
 	}
 	else
 	{
@@ -160,6 +164,9 @@ int main(void)
 	
 	show_alloc_mem();
 
+	// ft_free(tiny);
+	ft_free(tiny);
+	ft_free(small);
 	ft_free(large);
 	ft_free(large2);
 	ft_printf("\n");
