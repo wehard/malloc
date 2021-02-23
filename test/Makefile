@@ -13,7 +13,6 @@
 MALLOC_SRC = ../src/*.c
 UNITY_SRC = ../vendor/Unity/src/*.c
 
-
 LIB = -L ../libft -lft
 
 CFLAGS = -Wall -Wextra -Werror
@@ -29,14 +28,14 @@ INCL = -I ../libft/includes -I ../include -I ../vendor/Unity/src
 
 all: $(TARGETS)
 
-$(TEST_DIR)/%.o: $(TEST_DIR)/%.c
-	$(CC) $(CFLAGS) $(INCL) $(LIB) -o $@ -c $(MALLOC_SRC) $(UNITY_SRC) $< 
+$(TARGETS): %: %.c
+	$(CC) $(CFLAGS) -o $@ $< $(MALLOC_SRC) $(UNITY_SRC) $(INCL) $(LIB)
+
 clean:
 	#@make clean -C libft
 
 fclean: clean
-	@rm -f $(NAME)
-	#@make fclean -C libft
+	@rm -f $(TARGETS)
 
 re: fclean all
 
