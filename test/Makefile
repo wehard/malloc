@@ -31,6 +31,9 @@ all: $(TARGETS)
 $(TARGETS): %: %.c
 	$(CC) $(CFLAGS) -o $@ $< $(MALLOC_SRC) $(UNITY_SRC) $(INCL) $(LIB)
 
+run: re $(TARGETS)
+	for test in $(TARGETS); do ./$$test || exit 1; done
+
 clean:
 	#@make clean -C libft
 
@@ -39,4 +42,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all libftmake clean fclean re test
+.PHONY: all clean fclean re run
