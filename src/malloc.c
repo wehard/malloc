@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:29 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/22 18:19:52 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/23 17:09:51 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ void *ft_malloc(size_t size)
 	ft_printf("Out of memory!\n");
 	return (NULL);
 }
-
+/* 
 int main(void)
 {
 	void *tiny;
@@ -176,4 +176,4 @@ int main(void)
 	// print_memory(a, 2);
 	
 	return (0);
-}
+} */
