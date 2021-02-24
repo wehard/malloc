@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/02/24 15:56:12 by wkorande         ###   ########.fr        #
+#    Updated: 2021/02/24 19:32:06 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ $(TARGETS): %: %.c
 
 
 run: re $(TARGETS)
-	for test in $(TARGETS); do ./$$test || exit 1; done
+	@printf "\n"
+	@for test in $(TARGETS); do ./$$test; done
 
 clean:
 

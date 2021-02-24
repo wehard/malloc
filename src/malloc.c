@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:29 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/24 17:47:49 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/24 20:13:55 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,31 +22,60 @@
 
 t_malloc g_malloc;
 
+void *create_heap(size_t size)
+{
+	void *new;
+
+	new = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+	return (new);
+}
+
+void *get_heap(size_t size)
+{
+	size_t heap_size;
+
+	heap_size = 0;
+	if (!g_malloc.initialized)
+		return (NULL);
+	if (size <= TINY_ALLOC_SIZE)
+	{
+		if (!g_malloc.tiny_blocks)
+		{
+			heap_size = ((((TINY_ALLOC_SIZE + sizeof(t_block)) * MAX_TINY) / g_malloc.page_size) + 1) * g_malloc.page_size;
+			g_malloc.tiny_blocks = create_heap(heap_size);
+			g_malloc.tiny_blocks->size = heap_size;
+			g_malloc.tiny_blocks->free = TRUE;
+			g_malloc.tiny_blocks->next = NULL;
+		}
+		return (g_malloc.tiny_blocks);
+	}
+	else if (size <= SMALL_ALLOC_SIZE)
+	{
+		if (!g_malloc.small_blocks)
+		{
+			heap_size = ((((SMALL_ALLOC_SIZE + sizeof(t_block)) * MAX_SMALL) / g_malloc.page_size) + 1) * g_malloc.page_size;
+			g_malloc.small_blocks = create_heap(heap_size);
+			g_malloc.small_blocks->size = heap_size;
+			g_malloc.small_blocks->free = TRUE;
+			g_malloc.small_blocks->next = NULL;
+		}
+		return (g_malloc.small_blocks);
+	}
+	else
+		return (g_malloc.large_blocks);
+}
+
 void init_malloc()
 {
 	g_malloc.page_size = getpagesize();
 
-	size_t tiny_total_size = ((((TINY_ALLOC_SIZE + sizeof(t_block)) * 100) / g_malloc.page_size) + 1) * g_malloc.page_size;
-
-	g_malloc.tiny_data = mmap(0, tiny_total_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-	g_malloc.tiny_blocks = g_malloc.tiny_data;
-	g_malloc.tiny_blocks->size = tiny_total_size - sizeof(t_block);
-	g_malloc.tiny_blocks->free = TRUE;
-	g_malloc.tiny_blocks->next = NULL;
-
-	size_t small_total_size = g_malloc.page_size * NUM_SMALL_PAGES;
-
-	g_malloc.small_data = mmap(0, small_total_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-	g_malloc.small_blocks = g_malloc.small_data;
-	g_malloc.small_blocks->size = small_total_size - sizeof(t_block);
-	g_malloc.small_blocks->free = TRUE;
-	g_malloc.small_blocks->next = NULL;
-
+	g_malloc.tiny_blocks = NULL;
+	g_malloc.small_blocks = NULL;
 	g_malloc.large_blocks = NULL;
 
 	g_malloc.initialized = TRUE;
 
-	ft_printf("initialized (%d bytes)\n", tiny_total_size + small_total_size);
+	// ft_printf("initialized (%d bytes)\n", tiny_total_size + small_total_size);
 }
 
 void *split_block(t_block *cur, size_t size)
@@ -66,23 +95,11 @@ void *split_block(t_block *cur, size_t size)
 	return (cur);
 }
 
-void *allocate_area(size_t size, void *area)
+void *get_block(size_t size, void *area)
 {
 	t_block *cur;
 	t_block *prev;
 	
-
-	if (size <= TINY_ALLOC_SIZE && g_malloc.tiny_blocks == NULL)
-	{
-		size_t tiny_total_size = ((((TINY_ALLOC_SIZE + sizeof(t_block)) * 100) / g_malloc.page_size) + 1) * g_malloc.page_size;
-
-		g_malloc.tiny_data = mmap(0, tiny_total_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-		g_malloc.tiny_blocks = g_malloc.tiny_data;
-		g_malloc.tiny_blocks->size = tiny_total_size - sizeof(t_block);
-		g_malloc.tiny_blocks->free = TRUE;
-		g_malloc.tiny_blocks->next = NULL;
-	}
-
 	cur = area;
 
 	while ((cur->size < size || cur->free == FALSE) && cur->next != NULL)
@@ -103,7 +120,7 @@ void *allocate_area(size_t size, void *area)
 	}
 	else
 	{
-		ft_printf("Failed to allocate memory!\n");
+		// ft_printf("Failed to allocate memory!\n");
 		return (NULL);
 	}
 }
@@ -128,7 +145,7 @@ void *allocate_large(size_t size)
 	new->free = FALSE;
 	new->size = size;
 	new->next = NULL;
-	new->data = new + 1;
+	new->data = (void*)new + sizeof(t_block);
 
 	if (cur)
 		cur->next = new;
@@ -146,10 +163,8 @@ void *ft_malloc(size_t size)
 	if (!g_malloc.initialized)
 		init_malloc();
 
-	if (size <= TINY_ALLOC_SIZE)
-		return (allocate_area(size, g_malloc.tiny_blocks));
-	else if (size <= SMALL_ALLOC_SIZE)
-		return (allocate_area(size, g_malloc.small_blocks));
+	if (size <= SMALL_ALLOC_SIZE)
+		return (get_block(size, get_heap(size)));
 	else
 		return (allocate_large(size));
 	ft_printf("Out of memory!\n");
