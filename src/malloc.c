@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:29 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/23 17:09:51 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/24 17:47:49 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void init_malloc()
 {
 	g_malloc.page_size = getpagesize();
 
-	size_t tiny_total_size = g_malloc.page_size * NUM_TINY_PAGES;
+	size_t tiny_total_size = ((((TINY_ALLOC_SIZE + sizeof(t_block)) * 100) / g_malloc.page_size) + 1) * g_malloc.page_size;
 
 	g_malloc.tiny_data = mmap(0, tiny_total_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
 	g_malloc.tiny_blocks = g_malloc.tiny_data;
@@ -71,6 +71,18 @@ void *allocate_area(size_t size, void *area)
 	t_block *cur;
 	t_block *prev;
 	
+
+	if (size <= TINY_ALLOC_SIZE && g_malloc.tiny_blocks == NULL)
+	{
+		size_t tiny_total_size = ((((TINY_ALLOC_SIZE + sizeof(t_block)) * 100) / g_malloc.page_size) + 1) * g_malloc.page_size;
+
+		g_malloc.tiny_data = mmap(0, tiny_total_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+		g_malloc.tiny_blocks = g_malloc.tiny_data;
+		g_malloc.tiny_blocks->size = tiny_total_size - sizeof(t_block);
+		g_malloc.tiny_blocks->free = TRUE;
+		g_malloc.tiny_blocks->next = NULL;
+	}
+
 	cur = area;
 
 	while ((cur->size < size || cur->free == FALSE) && cur->next != NULL)
@@ -143,37 +155,37 @@ void *ft_malloc(size_t size)
 	ft_printf("Out of memory!\n");
 	return (NULL);
 }
-/* 
-int main(void)
-{
-	void *tiny;
-	void *small;
-	void *large;
 
-	tiny = ft_malloc(12);
-	ft_strcpy(tiny, "hello world");
+// int main(void)
+// {
+// 	void *tiny;
+// 	void *small;
+// 	void *large;
 
-	small = ft_malloc(256);
-	ft_strcpy(small, "..");
+// 	tiny = ft_malloc(12);
+// 	ft_strcpy(tiny, "hello world");
 
-	large = ft_malloc(2048);
-	ft_strcpy(large, "large allocation 2048 bytes");
+// 	small = ft_malloc(256);
+// 	ft_strcpy(small, "..");
 
-	void *large2 = ft_malloc(4096);
-	ft_strcpy(large2, "large allocation 4096 bytes");
+// 	large = ft_malloc(2048);
+// 	ft_strcpy(large, "large allocation 2048 bytes");
+
+// 	void *large2 = ft_malloc(4096);
+// 	ft_strcpy(large2, "large allocation 4096 bytes");
 	
-	show_alloc_mem();
+// 	show_alloc_mem();
 
-	// ft_free(tiny);
-	ft_free(tiny);
-	ft_free(small);
-	ft_free(large);
-	ft_free(large2);
-	ft_printf("\n");
+// 	// ft_free(tiny);
+// 	ft_free(tiny);
+// 	ft_free(small);
+// 	ft_free(large);
+// 	ft_free(large2);
+// 	ft_printf("\n");
 
-	show_alloc_mem();
+// 	show_alloc_mem();
 
-	// print_memory(a, 2);
+// 	// print_memory(a, 2);
 	
-	return (0);
-} */
+// 	return (0);
+// }

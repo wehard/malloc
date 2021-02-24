@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/02/23 18:03:40 by wkorande         ###   ########.fr        #
+#    Updated: 2021/02/24 15:56:12 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,13 +29,15 @@ INCL = -I ../libft/includes -I ../include -I ../vendor/Unity/src
 all: $(TARGETS)
 
 $(TARGETS): %: %.c
-	$(CC) $(CFLAGS) -o $@ $< $(MALLOC_SRC) $(UNITY_SRC) $(INCL) $(LIB)
+	@printf "Compiling $@..."
+	@$(CC) $(CFLAGS) -o $@ $< $(MALLOC_SRC) $(UNITY_SRC) $(INCL) $(LIB)
+	@printf "done\n"
+
 
 run: re $(TARGETS)
 	for test in $(TARGETS); do ./$$test || exit 1; done
 
 clean:
-	#@make clean -C libft
 
 fclean: clean
 	@rm -f $(TARGETS)
