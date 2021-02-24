@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:29 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/24 20:13:55 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/24 20:36:39 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 //  void *mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
 
 t_malloc g_malloc;
+
+size_t align_size(size_t size)
+{
+	return ((size + 15) & ~15);
+}
 
 void *create_heap(size_t size)
 {
@@ -163,6 +168,8 @@ void *ft_malloc(size_t size)
 	if (!g_malloc.initialized)
 		init_malloc();
 
+	size = align_size(size);
+
 	if (size <= SMALL_ALLOC_SIZE)
 		return (get_block(size, get_heap(size)));
 	else
@@ -176,6 +183,8 @@ void *ft_malloc(size_t size)
 // 	void *tiny;
 // 	void *small;
 // 	void *large;
+
+// 	ft_printf("%d\n", x);
 
 // 	tiny = ft_malloc(12);
 // 	ft_strcpy(tiny, "hello world");

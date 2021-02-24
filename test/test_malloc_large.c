@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/24 20:17:10 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/24 20:39:23 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,14 @@ void single_allocation(void)
 
 void verify_alloc_info(void)
 {
-	void *ptr = ft_malloc(SMALL_ALLOC_SIZE + 1);
+	size_t size = align_size(SMALL_ALLOC_SIZE + 1);
+	void *ptr = ft_malloc(size);
 	t_block *block = ptr - sizeof(t_block);
 
 	TEST_ASSERT_NOT_NULL(ptr);
 	TEST_ASSERT_NOT_NULL(block);
 	TEST_ASSERT_EQUAL_PTR(ptr, block->data);
-	TEST_ASSERT_EQUAL_INT(SMALL_ALLOC_SIZE + 1, block->size);
+	TEST_ASSERT_EQUAL_INT(size, block->size);
 	TEST_ASSERT_NULL(block->next);
 	ft_free(ptr);
 }

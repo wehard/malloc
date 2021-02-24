@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:58 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/24 19:33:33 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/24 20:38:34 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,8 @@ void			*ft_realloc(void *ptr, size_t size);
 void			ft_free(void *ptr);
 void			show_alloc_mem(void);
 void			print_memory(const void *addr, size_t size);
+
+
+size_t align_size(size_t size);
 
 #endif
