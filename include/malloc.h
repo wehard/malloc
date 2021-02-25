@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:58 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/24 20:38:34 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/25 17:59:45 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void			show_alloc_mem(void);
 void			print_memory(const void *addr, size_t size);
 
 
-size_t align_size(size_t size);
+size_t			align_size(size_t size);
+void			*get_heap(size_t size);
+void			*get_block(size_t size, void *area);
 
 #endif
