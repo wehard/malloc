@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/25 18:21:10 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/28 19:59:10 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,21 @@ void setUp(void)
 
 void tearDown(void)
 {
+}
+
+void should_initialize_when_called_once(void)
+{
+	void *ptr = ft_malloc(TINY_ALLOC_SIZE);
+	TEST_ASSERT_EQUAL_INT(g_malloc.initialized, 1);
+	ft_free(ptr);
+}
+
+void should_reset_initialized_when_all_freed(void)
+{
+	void *ptr = ft_malloc(TINY_ALLOC_SIZE);
+	TEST_ASSERT_EQUAL_INT(g_malloc.initialized, 1);
+	ft_free(ptr);
+	TEST_ASSERT_EQUAL_INT(g_malloc.initialized, 0);
 }
 
 void allocate_and_free_resets_heaps(void)
@@ -40,6 +55,8 @@ void allocate_and_free_resets_heaps(void)
 int main(void)
 {
 	UNITY_BEGIN();
+	RUN_TEST(should_initialize_when_called_once);
+	// RUN_TEST(should_reset_initialized_when_all_freed);
 	RUN_TEST(allocate_and_free_resets_heaps);
 	return UNITY_END();
 }

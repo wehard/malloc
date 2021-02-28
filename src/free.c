@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:05:16 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/24 20:12:27 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/28 20:05:12 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static int release_block(void *ptr, t_block **area)
 			cur->data = NULL;
 			if (cur->free && !cur->next)
 			{
-				munmap((void*)*area, cur->size + sizeof(t_block));
+				if (munmap((void*)*area, cur->size + sizeof(t_block) != 0))
+					ft_printf("failed to unmap\n");
 				*area = NULL;
 			}
 			return (TRUE);

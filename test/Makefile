@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/02/28 14:50:16 by wkorande         ###   ########.fr        #
+#    Updated: 2021/02/28 20:08:22 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ $(TARGETS): %: %.c
 
 
 run: re $(TARGETS)
-	@for test in $(TARGETS); do ./$$test > $$test.testpass || (echo "$(BOLDRED)$$test$(NORMAL)"); done
+	@for test in $(TARGETS); do ./$$test | tee $$test.testpass; printf "\n" || (echo "$(BOLDRED)$$test$(NORMAL)"); done
 	@ruby ../vendor/Unity/auto/unity_test_summary.rb .
 
 run2: re $(TARGETS)

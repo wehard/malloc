@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:29 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/24 20:36:39 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/02/28 20:05:55 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,10 @@ void *get_heap(size_t size)
 void init_malloc()
 {
 	g_malloc.page_size = getpagesize();
-
 	g_malloc.tiny_blocks = NULL;
 	g_malloc.small_blocks = NULL;
 	g_malloc.large_blocks = NULL;
-
 	g_malloc.initialized = TRUE;
-
-	// ft_printf("initialized (%d bytes)\n", tiny_total_size + small_total_size);
 }
 
 void *split_block(t_block *cur, size_t size)
@@ -184,7 +180,7 @@ void *ft_malloc(size_t size)
 // 	void *small;
 // 	void *large;
 
-// 	ft_printf("%d\n", x);
+// 	// ft_printf("%d\n", x);
 
 // 	tiny = ft_malloc(12);
 // 	ft_strcpy(tiny, "hello world");
