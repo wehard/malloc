@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/01 17:03:42 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/01 17:50:22 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,13 @@ void should_get_valid_pointer(void)
 	void *ptr = ft_malloc(TINY_ALLOC_SIZE);
 	TEST_ASSERT_EQUAL_INT(1, ptr_is_valid(ptr));
 	ft_free(ptr);
+}
+
+void should_get_invalid_pointer_when_pointer_not_allocated(void)
+{
+	int a = 1234;
+	void *ptr = &a;
+	TEST_ASSERT_FALSE(ptr_is_valid(ptr));
 }
 
 void should_init_successfully(void)
@@ -77,6 +84,7 @@ int main(void)
 {
 	UNITY_BEGIN();
 	RUN_TEST(should_get_valid_pointer);
+	RUN_TEST(should_get_invalid_pointer_when_pointer_not_allocated);
 	RUN_TEST(should_init_successfully);
 	RUN_TEST(should_initialize_when_called_once);
 	// RUN_TEST(should_reset_initialized_when_all_freed);
