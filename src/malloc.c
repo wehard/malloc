@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:29 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/28 20:05:55 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/01 17:08:13 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,41 @@
 #include <sys/mman.h>
 #include <errno.h>
 #include <stdio.h>
+#include <pthread.h>
 
 //  void *mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
 
 t_malloc g_malloc;
+pthread_mutex_t g_malloc_mutex;
+
+
+int ptr_is_valid(void *ptr)
+{
+	t_block *cur;
+
+	cur = g_malloc.tiny_blocks;
+	while (cur)
+	{
+		if (cur->data && cur->data == ptr)
+			return (TRUE);
+		cur = cur->next;
+	}
+	cur = g_malloc.small_blocks;
+	while (cur)
+	{
+		if (cur->data && cur->data == ptr)
+			return (TRUE);
+		cur = cur->next;
+	}
+	cur = g_malloc.large_blocks;
+	while (cur)
+	{
+		if (cur->data && cur->data == ptr)
+			return (TRUE);
+		cur = cur->next;
+	}
+	return (FALSE);
+}
 
 size_t align_size(size_t size)
 {
@@ -77,6 +108,7 @@ void init_malloc()
 	g_malloc.small_blocks = NULL;
 	g_malloc.large_blocks = NULL;
 	g_malloc.initialized = TRUE;
+	pthread_mutex_init(&g_malloc_mutex, NULL);
 }
 
 void *split_block(t_block *cur, size_t size)
@@ -161,17 +193,21 @@ void *allocate_large(size_t size)
 
 void *ft_malloc(size_t size)
 {
+	void *ptr;
+
+	ptr = NULL;
 	if (!g_malloc.initialized)
 		init_malloc();
 
 	size = align_size(size);
 
+	pthread_mutex_lock(&g_malloc_mutex);
 	if (size <= SMALL_ALLOC_SIZE)
-		return (get_block(size, get_heap(size)));
+		ptr = get_block(size, get_heap(size));
 	else
-		return (allocate_large(size));
-	ft_printf("Out of memory!\n");
-	return (NULL);
+		ptr = allocate_large(size);
+	pthread_mutex_unlock(&g_malloc_mutex);
+	return (ptr);
 }
 
 // int main(void)

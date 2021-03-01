@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/02/28 20:08:22 by wkorande         ###   ########.fr        #
+#    Updated: 2021/03/01 15:05:33 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ NORMAL=\033[0m
 MALLOC_SRC = ../src/*.c
 UNITY_SRC = ../vendor/Unity/src/*.c
 
-LIB = -L ../libft -lft
+LIB = -L ../libft -lft -lpthread
 
 CFLAGS = -Wall -Wextra -Werror
 

@@ -6,13 +6,17 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/28 19:59:10 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/01 17:03:42 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "unity.h"
 #include "malloc.h"
 #include "libft.h"
+#include <unistd.h>
+
+void init_malloc(void);
+int ptr_is_valid(void *ptr);
 
 void setUp(void)
 {
@@ -22,19 +26,36 @@ void tearDown(void)
 {
 }
 
+void should_get_valid_pointer(void)
+{
+	void *ptr = ft_malloc(TINY_ALLOC_SIZE);
+	TEST_ASSERT_EQUAL_INT(1, ptr_is_valid(ptr));
+	ft_free(ptr);
+}
+
+void should_init_successfully(void)
+{
+	init_malloc();
+	TEST_ASSERT_EQUAL_INT(1, g_malloc.initialized);
+	TEST_ASSERT_NULL(g_malloc.tiny_blocks);
+	TEST_ASSERT_NULL(g_malloc.small_blocks);
+	TEST_ASSERT_NULL(g_malloc.large_blocks);
+	TEST_ASSERT_EQUAL_INT(getpagesize(), g_malloc.page_size);
+}
+
 void should_initialize_when_called_once(void)
 {
 	void *ptr = ft_malloc(TINY_ALLOC_SIZE);
-	TEST_ASSERT_EQUAL_INT(g_malloc.initialized, 1);
+	TEST_ASSERT_EQUAL_INT(1, g_malloc.initialized);
 	ft_free(ptr);
 }
 
 void should_reset_initialized_when_all_freed(void)
 {
 	void *ptr = ft_malloc(TINY_ALLOC_SIZE);
-	TEST_ASSERT_EQUAL_INT(g_malloc.initialized, 1);
+	TEST_ASSERT_EQUAL_INT(1, g_malloc.initialized);
 	ft_free(ptr);
-	TEST_ASSERT_EQUAL_INT(g_malloc.initialized, 0);
+	TEST_ASSERT_EQUAL_INT(0, g_malloc.initialized);
 }
 
 void allocate_and_free_resets_heaps(void)
@@ -55,6 +76,8 @@ void allocate_and_free_resets_heaps(void)
 int main(void)
 {
 	UNITY_BEGIN();
+	RUN_TEST(should_get_valid_pointer);
+	RUN_TEST(should_init_successfully);
 	RUN_TEST(should_initialize_when_called_once);
 	// RUN_TEST(should_reset_initialized_when_all_freed);
 	RUN_TEST(allocate_and_free_resets_heaps);

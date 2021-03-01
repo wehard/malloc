@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:58 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/25 17:59:45 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/01 15:46:29 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MALLOC_H
 
 # include <stdlib.h>
+# include <pthread.h>
 
 # define TRUE 1
 # define FALSE 0
@@ -57,6 +58,7 @@ typedef struct	s_malloc
 }				t_malloc;
 
 extern t_malloc g_malloc;
+extern pthread_mutex_t g_malloc_mutex;
 
 void			*ft_malloc(size_t size);
 void			*ft_realloc(void *ptr, size_t size);
