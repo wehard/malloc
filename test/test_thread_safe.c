@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/01 17:26:43 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/01 17:38:58 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft.h"
 
 const int num_threads = 10;
-uint64_t ptrs[num_threads];
+void *ptrs[num_threads];
 
 int ptr_is_valid(void *ptr);
 
@@ -43,11 +43,11 @@ void should_init_mutex(void)
 	ft_free(ptr);
 }
 
-static void *malloc_thread(void *ptr)
+static void *malloc_thread(void *arg)
 {
+	arg = 0;
 	void *p = ft_malloc(TINY_ALLOC_SIZE);
-	*(uint64_t*)ptr = (uint64_t)&p;
-	return NULL;
+	return p;
 }
 
 void should_allocate_when_call_from_thread(void)
@@ -57,25 +57,23 @@ void should_allocate_when_call_from_thread(void)
 	int i = 0;
 	while (i < num_threads)
 	{
-		pthread_create(&threads[i], NULL, malloc_thread, &ptrs[i]);
+		pthread_create(&threads[i], NULL, malloc_thread, NULL);
+		pthread_join(threads[i], &ptrs[i]);
 		i++;
 	}
 
 	i = 0;
 	while (i < num_threads)
 	{
-		pthread_join(threads[i], NULL);
+		
 		i++;
 	}
 
 	i = 0;
 	while (i < num_threads)
 	{
-		printf("%d %#zx ptr %p\n", i, ptrs[i], (void*)ptrs[i]);
-		// TEST_ASSERT_EQUAL_INT(TRUE, ptr_is_valid((void*)ptrs[i]));
-		void *p = (void*)ptrs[i];
-		if(!ptr_is_valid(p))
-			printf("Invalid pointer %p!\n", p);
+		TEST_ASSERT_EQUAL_INT(TRUE, ptr_is_valid(ptrs[i]));
+		ft_free(ptrs[i]);
 		i++;
 	}
 }
@@ -83,7 +81,7 @@ void should_allocate_when_call_from_thread(void)
 int main(void)
 {
 	UNITY_BEGIN();
-	// RUN_TEST(should_init_mutex);
+	RUN_TEST(should_init_mutex);
 	RUN_TEST(should_allocate_when_call_from_thread);
 	return UNITY_END();
 }
