@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:05:16 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/28 20:05:12 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/09 13:30:59 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,17 @@
 #include "ft_printf.h"
 #include <sys/mman.h>
 
-static int release_block(void *ptr, t_block **area)
+static int	release_block(void *ptr, t_block **area)
 {
-	t_block *cur;
-	t_block *prev;
+	t_block	*cur;
+	t_block	*prev;
 
 	cur = *area;
 	prev = NULL;
-
 	while (cur)
 	{
 		if (cur->data && cur->data == ptr)
 		{
-		
 			if (cur->next->free)
 			{
 				cur->size += cur->next->size;
@@ -48,20 +46,18 @@ static int release_block(void *ptr, t_block **area)
 	return (FALSE);
 }
 
-static int release_large_block(void *ptr, t_block **area)
+static int	release_large_block(void *ptr, t_block **area)
 {
-	t_block *cur;
-	t_block *prev;
+	t_block	*cur;
+	t_block	*prev;
 
 	cur = *area;
 	prev = NULL;
-
 	while (cur)
 	{
 		if (cur->data && cur->data == ptr)
 		{
-			// free memory
-			if (!prev) // its the first block
+			if (!prev)
 			{
 				*area = cur->next;
 				munmap((void*)cur, cur->size + sizeof(t_block));
@@ -79,11 +75,10 @@ static int release_large_block(void *ptr, t_block **area)
 	return (FALSE);
 }
 
-void ft_free(void *ptr)
+void		ft_free(void *ptr)
 {
 	if (!ptr)
 		return ;
-		
 	if (release_block(ptr, &g_malloc.tiny_blocks))
 		return ;
 	if (release_block(ptr, &g_malloc.small_blocks))
