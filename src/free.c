@@ -6,13 +6,19 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:05:16 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 16:16:01 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/29 16:44:37 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc_internal.h"
 #include "ft_printf.h"
 #include <sys/mman.h>
+
+static void	unmap_heap(t_block **area)
+{
+	if (munmap((void *)*area, (*area)->size + sizeof(t_block) != 0))
+		ft_printf("failed to unmap\n");
+}
 
 static int	release_block(void *ptr, t_block **area)
 {
@@ -34,8 +40,7 @@ static int	release_block(void *ptr, t_block **area)
 			cur->data = NULL;
 			if (cur->free && !cur->next)
 			{
-				if (munmap((void *)*area, cur->size + sizeof(t_block) != 0))
-					ft_printf("failed to unmap\n");
+				unmap_heap(area);
 				*area = NULL;
 			}
 			return (TRUE);
@@ -60,12 +65,12 @@ static int	release_large_block(void *ptr, t_block **area)
 			if (!prev)
 			{
 				*area = cur->next;
-				munmap((void *)cur, cur->size + sizeof(t_block));
+				unmap_heap(&cur);
 			}
 			else
 			{
 				prev->next = cur->next;
-				munmap((void *)cur, cur->size + sizeof(t_block));
+				unmap_heap(&cur);
 			}
 			return (TRUE);
 		}

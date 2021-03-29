@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 16:12:41 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 16:14:27 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/29 16:34:03 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,8 @@ size_t			align_size(size_t size);
 void			*get_heap(size_t size);
 void			*get_block(size_t size, void *area);
 
+void	init_heap(t_alloc_zone zone, t_block **blocks);
+size_t	calc_heap_size(t_alloc_zone zone);
+void	*create_heap(size_t size);
+void	*allocate_large(size_t size);
 #endif

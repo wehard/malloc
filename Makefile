@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/02/22 13:30:39 by wkorande         ###   ########.fr        #
+#    Updated: 2021/03/29 16:31:26 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,11 @@ SRCDIR = src
 SRC = malloc.c\
 		free.c\
 		realloc.c\
+		heap.c\
+		block.c\
+		helper.c\
+		show_alloc_mem.c\
 		print_memory.c\
-		show_alloc_mem.c
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRC))
 
