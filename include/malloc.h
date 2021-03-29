@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:58 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/01 15:46:29 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/29 16:09:24 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,22 @@
 # define FREE 0
 # define USED 1
 
-
-typedef enum	e_alloc_zone
+typedef enum e_alloc_zone
 {
 	TINY = 1,
 	SMALL = 4,
 	LARGE = 8
 }				t_alloc_zone;
 
-typedef struct		s_block
+typedef struct s_block
 {
 	void			*data;
-	int 			free;
+	int				free;
 	size_t			size;
-	struct s_block *next;
+	struct s_block	*next;
 }					t_block;
 
-typedef struct	s_malloc
+typedef struct s_malloc
 {
 	int			initialized;
 	int			page_size;
@@ -57,15 +56,14 @@ typedef struct	s_malloc
 	t_block		*large_blocks;
 }				t_malloc;
 
-extern t_malloc g_malloc;
-extern pthread_mutex_t g_malloc_mutex;
+extern t_malloc			g_malloc;
+extern pthread_mutex_t	g_malloc_mutex;
 
 void			*ft_malloc(size_t size);
 void			*ft_realloc(void *ptr, size_t size);
 void			ft_free(void *ptr);
 void			show_alloc_mem(void);
 void			print_memory(const void *addr, size_t size);
-
 
 size_t			align_size(size_t size);
 void			*get_heap(size_t size);
