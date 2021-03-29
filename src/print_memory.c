@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/26 21:23:28 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/21 22:34:38 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/29 14:17:15 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 
 void	print_memory(const void *addr, size_t size)
 {
-	size_t i;
-	unsigned char *ptr;
+	size_t			i;
+	unsigned char	*ptr;
 
-	ptr = (unsigned char*)addr;
-
+	ptr = (unsigned char *)addr;
 	i = 0;
 	while (i < size)
 	{

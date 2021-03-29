@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/22 13:30:08 by wkorande          #+#    #+#             */
-/*   Updated: 2021/02/22 18:19:36 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/29 14:22:39 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,36 @@
 #include "libft.h"
 #include "ft_printf.h"
 
+static void	show_debug(t_block	*cur)
+{
+	int	i;
+
+	if (cur->free)
+		ft_printf("\t%s ", "FREE");
+	else
+		ft_printf("\t%s ", "USED");
+	i = 0;
+	while (i < (int)cur->size)
+	{
+		ft_putchar(*((char *)cur + sizeof(t_block) + i));
+		i++;
+	}
+}
+
 static int	show_area(t_block *blocks, char *name, int debug)
 {
 	t_block	*cur;
 	size_t	bytes;
-	int		i;
 
 	cur = blocks;
 	bytes = 0;
-	ft_printf("%s : %p\n", name, (void*)blocks);
+	ft_printf("%s : %p\n", name, (void *)blocks);
 	while (cur && (debug || !cur->free))
 	{
-		ft_printf("%p - %p : %d bytes", (void*)cur + sizeof(t_block), (void*)cur + sizeof(t_block) + cur->size, cur->size);
+		ft_printf("%p - %p : %d bytes", (void *)cur + sizeof(t_block),
+			(void *)cur + sizeof(t_block) + cur->size, cur->size);
 		if (debug)
-		{
-			ft_printf("\t%s ", cur->free == FALSE ? "USED" : "FREE");
-			i = 0;
-			while (i < (int)cur->size)
-			{
-				ft_putchar(*((char*)cur + sizeof(t_block) + i));
-				i++;
-			}
-		}
+			show_debug(cur);
 		ft_putchar('\n');
 		if (cur->free == FALSE)
 			bytes += cur->size;
@@ -44,9 +52,9 @@ static int	show_area(t_block *blocks, char *name, int debug)
 	return (bytes);
 }
 
-void		show_alloc_mem(void)
+void	show_alloc_mem(void)
 {
-	size_t bytes;
+	size_t	bytes;
 
 	bytes = 0;
 	bytes += show_area(g_malloc.tiny_blocks, "TINY", FALSE);
