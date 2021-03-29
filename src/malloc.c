@@ -6,11 +6,12 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:29 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 14:58:58 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/29 16:15:04 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+// #include "malloc.h"
+#include "malloc_internal.h"
 #include "libft.h"
 #include "ft_printf.h"
 #include <unistd.h>
