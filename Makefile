@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/03/30 11:51:22 by wkorande         ###   ########.fr        #
+#    Updated: 2021/03/30 14:50:34 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,11 @@ $(NAME):
 
 debug:
 	@make debug -C libft
-	@$(CC) -g $(CFLAGS) $(INCL) $(SRCS) $(LIB) -o $(NAME)
+	@printf "$(BOLDYELLOW)%s$(NORMAL)\n" "Making $(NAME)"
+	@$(CC) -g $(CFLAGS) $(INCL) -c $(SRCS) 
+	@ar rc $(NAME) $(OUT)
+	@ranlib $(NAME)
+	@printf "$(YELLOW)%s$(NORMAL)\n" "done"
 
 clean:
 	@make clean -C libft

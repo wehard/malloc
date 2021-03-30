@@ -1,39 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   realloc.c                                          :+:      :+:    :+:   */
+/*   test_subject_4.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/24 14:05:38 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 15:17:09 by wkorande         ###   ########.fr       */
+/*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
+/*   Updated: 2021/03/30 15:20:18 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "unity.h"
 #include "malloc.h"
 #include "malloc_internal.h"
 #include "libft.h"
+#include <unistd.h>
 
-// TODO: thread safety
-
-void	*ft_realloc(void *ptr, size_t size)
+void setUp(void)
 {
-	t_block *block;
-	void	*new;
+}
 
-	if (!ptr || !size)
-		return (NULL);
-	if (!ptr_is_valid(ptr))
-		return (NULL);
-	block = ptr - sizeof(t_block);
-	if (size <= block->size)
-	{
-		block->size = size;
-		return (ptr);
-	}
-	if (!(new = ft_malloc(align_size(size))))
-		return (NULL);
-	ft_memcpy(new, ptr, block->size);
-	ft_free(ptr);
-	return (new);
+void tearDown(void)
+{
+}
+
+void print(char *s)
+{
+	write(1, s, strlen(s));
+}
+
+void test4(void)
+{
+	char *addr;
+
+	addr = (char *)ft_malloc(16);
+	ft_free(NULL);
+	ft_free((void *)addr + 5);
+	if (ft_realloc((void *)addr + 5, 10) == NULL)
+		print("Bonjours\n");
+	else
+		TEST_FAIL();
+}
+
+int main(void)
+{
+	UNITY_BEGIN();
+	RUN_TEST(test4);
+	return UNITY_END();
 }

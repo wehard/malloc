@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/03/30 12:41:03 by wkorande         ###   ########.fr        #
+#    Updated: 2021/03/30 15:03:55 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,11 @@ CC = clang
 TEST_DIR = .
 
 TESTS = $(wildcard $(TEST_DIR)/*.c)
+SUBJECT_TESTS = $(wildcard $(TEST_DIR)/test_subject_*.c)
+
 TARGETS = $(patsubst $(TEST_DIR)/%.c,$(TEST_DIR)/%,$(TESTS))
+
+SUBJECT_TARGETS = $(patsubst $(TEST_DIR)/%.c,$(TEST_DIR)/%,$(SUBJECT_TESTS))
 
 INCL = -I ../libft/includes -I ../include -I ../vendor/Unity/src
 
@@ -50,12 +54,18 @@ all: lib $(TARGETS)
 
 $(TARGETS): %: %.c
 	@printf "Compiling $@..."
-	@$(CC) $(CFLAGS) $(INCL) $(UNITY_SRC) -o $@ $< $(LIB)
+	@$(CC) -g $(CFLAGS) $(INCL) $(UNITY_SRC) -o $@ $< $(LIB)
 	@printf "done\n"
 
 run: re $(TARGETS)
 	@printf "\n$(BOLDBLUE)--- BEGIN TESTS ---$(BLUE)\n"
 	@for test in $(TARGETS); do ./$$test | tee $$test.testpass; printf "\n" || (printf "$(BOLDRED)$$test$(NORMAL)"); done
+	@printf "\n$(BOLDBLUE)--- END TESTS ---$(NORMAL)\n"
+	@ruby ../vendor/Unity/auto/unity_test_summary.rb .
+
+subject: fclean $(SUBJECT_TARGETS)
+	@printf "\n$(BOLDBLUE)--- BEGIN TESTS ---$(BLUE)\n"
+	@for test in $(SUBJECT_TARGETS); do ./$$test | tee $$test.testpass; printf "\n" || (printf "$(BOLDRED)$$test$(NORMAL)"); done
 	@printf "\n$(BOLDBLUE)--- END TESTS ---$(NORMAL)\n"
 	@ruby ../vendor/Unity/auto/unity_test_summary.rb .
 
@@ -72,6 +82,7 @@ clean:
 
 fclean: clean
 	@rm -f $(TARGETS)
+	@rm -f $(SUBJECT_TARGETS)
 
 re: fclean all
 

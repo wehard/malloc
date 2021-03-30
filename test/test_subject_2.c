@@ -1,39 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   realloc.c                                          :+:      :+:    :+:   */
+/*   test_subject_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/24 14:05:38 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 15:17:09 by wkorande         ###   ########.fr       */
+/*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
+/*   Updated: 2021/03/30 14:27:15 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "unity.h"
 #include "malloc.h"
 #include "malloc_internal.h"
 #include "libft.h"
+#include <unistd.h>
 
-// TODO: thread safety
-
-void	*ft_realloc(void *ptr, size_t size)
+void setUp(void)
 {
-	t_block *block;
-	void	*new;
+}
 
-	if (!ptr || !size)
-		return (NULL);
-	if (!ptr_is_valid(ptr))
-		return (NULL);
-	block = ptr - sizeof(t_block);
-	if (size <= block->size)
+void tearDown(void)
+{
+}
+
+void test2(void)
+{
+	int i;
+	char *addr;
+
+	i = 0;
+	while (i < 1024)
 	{
-		block->size = size;
-		return (ptr);
+		addr = (char *)ft_malloc(1024);
+		addr[0] = 42;
+		ft_free(addr);
+		i++;
 	}
-	if (!(new = ft_malloc(align_size(size))))
-		return (NULL);
-	ft_memcpy(new, ptr, block->size);
-	ft_free(ptr);
-	return (new);
+}
+
+int main(void)
+{
+	UNITY_BEGIN();
+	RUN_TEST(test2);
+	return UNITY_END();
 }

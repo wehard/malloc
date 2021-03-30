@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 16:12:41 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 11:15:35 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/30 15:12:21 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,7 @@ void	init_heap(t_zone zone, t_block **heap);
 size_t	calc_heap_size(t_zone zone);
 void	*create_heap(size_t size);
 void	*allocate_large(size_t size);
+
+int		ptr_is_valid(void *ptr);
+
 #endif
