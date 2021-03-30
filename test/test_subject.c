@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 11:41:00 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/30 11:56:28 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,16 +117,6 @@ void test4(void)
 	}
 }
 
-void test5(void)
-{
-	ft_malloc(1024);
-	ft_malloc(1024 * 32);
-	ft_malloc(1024 * 1024);
-	ft_malloc(1024 * 1024 * 16);
-	ft_malloc(1024 * 1024 * 128);
-	show_alloc_mem();
-}
-
 int main(void)
 {
 	UNITY_BEGIN();
@@ -136,6 +126,5 @@ int main(void)
 	RUN_TEST(test3);
 	RUN_TEST(test3_1);
 	RUN_TEST(test4);
-	RUN_TEST(test5);
 	return UNITY_END();
 }

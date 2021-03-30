@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/03/30 11:53:48 by wkorande         ###   ########.fr        #
+#    Updated: 2021/03/30 12:11:03 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ NORMAL=\033[0m
 MALLOC_SRC = ../src/*.c
 UNITY_SRC = ../vendor/Unity/src/*.c
 
-LIB = -L ../libft -lft -lpthread -L ../ -lft_malloc_$(HOSTTYPE)
+LIB = -L ../ -lft_malloc_$(HOSTTYPE) -L ../libft -lft -lpthread
 
 CFLAGS = -Wall -Wextra -Werror
 
@@ -50,11 +50,12 @@ all: $(TARGETS)
 
 $(TARGETS): %: %.c
 	@printf "Compiling $@..."
-	@$(CC) $(CFLAGS) -o $@ $< $(MALLOC_SRC) $(UNITY_SRC) $(INCL) $(LIB)
+	@$(CC) $(CFLAGS) $(INCL) $(UNITY_SRC) -o $@ $< $(LIB)
 	@printf "done\n"
 
 
 run: re $(TARGETS)
+	@printf "\n"
 	@for test in $(TARGETS); do ./$$test | tee $$test.testpass; printf "\n" || (echo "$(BOLDRED)$$test$(NORMAL)"); done
 	@ruby ../vendor/Unity/auto/unity_test_summary.rb .
 
