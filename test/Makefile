@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/03/30 12:11:03 by wkorande         ###   ########.fr        #
+#    Updated: 2021/03/30 12:41:03 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,22 +46,25 @@ INCL = -I ../libft/includes -I ../include -I ../vendor/Unity/src
 
 FAILED=none
 
-all: $(TARGETS)
+all: lib $(TARGETS)
 
 $(TARGETS): %: %.c
 	@printf "Compiling $@..."
 	@$(CC) $(CFLAGS) $(INCL) $(UNITY_SRC) -o $@ $< $(LIB)
 	@printf "done\n"
 
-
 run: re $(TARGETS)
-	@printf "\n"
-	@for test in $(TARGETS); do ./$$test | tee $$test.testpass; printf "\n" || (echo "$(BOLDRED)$$test$(NORMAL)"); done
+	@printf "\n$(BOLDBLUE)--- BEGIN TESTS ---$(BLUE)\n"
+	@for test in $(TARGETS); do ./$$test | tee $$test.testpass; printf "\n" || (printf "$(BOLDRED)$$test$(NORMAL)"); done
+	@printf "\n$(BOLDBLUE)--- END TESTS ---$(NORMAL)\n"
 	@ruby ../vendor/Unity/auto/unity_test_summary.rb .
 
 run2: re $(TARGETS)
 	$(foreach test,$(TARGETS),./$(test);)
 	@ruby ../vendor/Unity/auto/unity_test_summary.rb .
+
+lib:
+	@make -C ..
 
 clean:
 	@rm -f *.testpass
