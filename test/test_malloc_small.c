@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 10:39:32 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/30 11:17:54 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,15 @@ void can_allocate_100_times(void)
 	TEST_ASSERT_NULL(g_malloc.heap_small);
 }
 
-void cannot_allocate_1000_times(void)
+void can_allocate_1024_times(void)
 {
-	void *blocks[1000];
-	for (int i = 0; i < 1000; i++)
+	void *blocks[1024];
+	for (int i = 0; i < 1024; i++)
 	{
 		blocks[i] = ft_malloc(SMALL_ALLOC_SIZE);
 	}
-	TEST_ASSERT_NULL(blocks[999]);
-	for (int i = 0; i < 1000; i++)
+	TEST_ASSERT_NOT_NULL(blocks[1023]);
+	for (int i = 0; i < 1024; i++)
 	{
 		ft_free(blocks[i]);
 	}
@@ -98,6 +98,6 @@ int main(void)
 	RUN_TEST(free_all_sets_heap_null);
 	RUN_TEST(tiny_allocation_does_not_affect_small_heap);
 	RUN_TEST(can_allocate_100_times);
-	RUN_TEST(cannot_allocate_1000_times);
+	RUN_TEST(can_allocate_1024_times);
 	return UNITY_END();
 }

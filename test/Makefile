@@ -6,9 +6,13 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/03/01 15:05:33 by wkorande         ###   ########.fr        #
+#    Updated: 2021/03/30 11:53:48 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+ifeq ($(HOSTTYPE),)
+	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
 
 BOLDRED=\033[1;31m
 GREEN=\033[0;32m
@@ -27,7 +31,7 @@ NORMAL=\033[0m
 MALLOC_SRC = ../src/*.c
 UNITY_SRC = ../vendor/Unity/src/*.c
 
-LIB = -L ../libft -lft -lpthread
+LIB = -L ../libft -lft -lpthread -L ../ -lft_malloc_$(HOSTTYPE)
 
 CFLAGS = -Wall -Wextra -Werror
 

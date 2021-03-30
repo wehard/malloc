@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 16:12:41 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 10:41:32 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/30 11:15:35 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define FALSE 0
 
 # define MAX_TINY 100
-# define MAX_SMALL 100
+# define MAX_SMALL 1024
 
 # define TINY_ALLOC_SIZE 128
 # define SMALL_ALLOC_SIZE 1024
