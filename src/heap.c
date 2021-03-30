@@ -6,22 +6,22 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 16:26:43 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 16:34:22 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/30 10:39:32 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc_internal.h"
 #include <sys/mman.h>
 
-void	init_heap(t_alloc_zone zone, t_block **blocks)
+void	init_heap(t_zone zone, t_block **heap)
 {
 	size_t	heap_size;
 
 	heap_size = calc_heap_size(zone);
-	*blocks = create_heap(heap_size);
-	(*blocks)->size = heap_size;
-	(*blocks)->free = TRUE;
-	(*blocks)->next = NULL;
+	*heap = create_heap(heap_size);
+	(*heap)->size = heap_size;
+	(*heap)->free = TRUE;
+	(*heap)->next = NULL;
 }
 
 void	*create_heap(size_t size)
@@ -32,7 +32,7 @@ void	*create_heap(size_t size)
 	return (new);
 }
 
-size_t	calc_heap_size(t_alloc_zone zone)
+size_t	calc_heap_size(t_zone zone)
 {
 	size_t	heap_size;
 
@@ -56,18 +56,18 @@ void	*get_heap(size_t size)
 		return (NULL);
 	if (size <= TINY_ALLOC_SIZE)
 	{
-		if (!g_malloc.tiny_blocks)
-			init_heap(TINY, &g_malloc.tiny_blocks);
-		return (g_malloc.tiny_blocks);
+		if (!g_malloc.heap_tiny)
+			init_heap(TINY, &g_malloc.heap_tiny);
+		return (g_malloc.heap_tiny);
 	}
 	else if (size <= SMALL_ALLOC_SIZE)
 	{
-		if (!g_malloc.small_blocks)
-			init_heap(SMALL, &g_malloc.small_blocks);
-		return (g_malloc.small_blocks);
+		if (!g_malloc.heap_small)
+			init_heap(SMALL, &g_malloc.heap_small);
+		return (g_malloc.heap_small);
 	}
 	else
-		return (g_malloc.large_blocks);
+		return (g_malloc.heap_large);
 }
 
 void	*allocate_large(size_t size)
@@ -76,7 +76,7 @@ void	*allocate_large(size_t size)
 	t_block	*cur;
 	t_block	*prev;
 
-	cur = g_malloc.large_blocks;
+	cur = g_malloc.heap_large;
 	prev = NULL;
 	new = NULL;
 	while (cur && cur->next)
@@ -93,7 +93,7 @@ void	*allocate_large(size_t size)
 		cur->next = new;
 	else
 		cur = new;
-	if (g_malloc.large_blocks == NULL)
-		g_malloc.large_blocks = new;
+	if (g_malloc.heap_large == NULL)
+		g_malloc.heap_large = new;
 	return (new->data);
 }

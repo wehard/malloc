@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/22 13:30:08 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 16:15:40 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/30 10:39:32 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,19 @@ void	show_alloc_mem(void)
 	size_t	bytes;
 
 	bytes = 0;
-	bytes += show_area(g_malloc.tiny_blocks, "TINY", FALSE);
-	bytes += show_area(g_malloc.small_blocks, "SMALL", FALSE);
-	bytes += show_area(g_malloc.large_blocks, "LARGE", FALSE);
+	bytes += show_area(g_malloc.heap_tiny, "TINY", FALSE);
+	bytes += show_area(g_malloc.heap_small, "SMALL", FALSE);
+	bytes += show_area(g_malloc.heap_large, "LARGE", FALSE);
+	ft_printf("Total : %d bytes\n", bytes);
+}
+
+void	show_alloc_mem_ex(void)
+{
+	size_t	bytes;
+
+	bytes = 0;
+	bytes += show_area(g_malloc.heap_tiny, "TINY", TRUE);
+	bytes += show_area(g_malloc.heap_small, "SMALL", TRUE);
+	bytes += show_area(g_malloc.heap_large, "LARGE", TRUE);
 	ft_printf("Total : %d bytes\n", bytes);
 }

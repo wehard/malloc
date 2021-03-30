@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 16:27:52 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 16:35:45 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/30 10:36:36 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ static void	*split_block(t_block *cur, size_t size)
 	return (cur);
 }
 
-void	*get_block(size_t size, void *area)
+void	*get_block(size_t size, void *heap)
 {
 	t_block	*cur;
 	t_block	*prev;
 
-	cur = area;
+	cur = heap;
 	while ((cur->size < size || cur->free == FALSE) && cur->next != NULL)
 	{
 		prev = cur;

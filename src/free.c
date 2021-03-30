@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:05:16 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 16:44:37 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/30 10:39:32 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ void	ft_free(void *ptr)
 {
 	if (!ptr)
 		return ;
-	if (release_block(ptr, &g_malloc.tiny_blocks))
+	if (release_block(ptr, &g_malloc.heap_tiny))
 		return ;
-	if (release_block(ptr, &g_malloc.small_blocks))
+	if (release_block(ptr, &g_malloc.heap_small))
 		return ;
-	if (release_large_block(ptr, &g_malloc.large_blocks))
+	if (release_large_block(ptr, &g_malloc.heap_large))
 		return ;
 }

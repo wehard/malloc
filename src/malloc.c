@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:29 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 16:34:37 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/30 10:39:27 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ pthread_mutex_t	g_malloc_mutex;
 void	init_malloc(void)
 {
 	g_malloc.page_size = getpagesize();
-	g_malloc.tiny_blocks = NULL;
-	g_malloc.small_blocks = NULL;
-	g_malloc.large_blocks = NULL;
+	g_malloc.heap_tiny = NULL;
+	g_malloc.heap_small = NULL;
+	g_malloc.heap_large = NULL;
 	g_malloc.initialized = TRUE;
 	pthread_mutex_init(&g_malloc_mutex, NULL);
 }

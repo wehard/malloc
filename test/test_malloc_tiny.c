@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 16:16:21 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/30 10:39:32 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,15 @@ void free_all_sets_heap_null(void)
 	ft_strncpy(block, "hello world", 12);
 	TEST_ASSERT_NOT_NULL(block);
 	ft_free(block);
-	TEST_ASSERT_NULL(g_malloc.tiny_blocks);
+	TEST_ASSERT_NULL(g_malloc.heap_tiny);
 }
 
 void small_allocation_not_affect_tiny_zone(void)
 {
 	char *block = (char*)ft_malloc(TINY_ALLOC_SIZE + 1);
 	ft_free(block);
-	TEST_ASSERT_NULL(g_malloc.small_blocks);
-	TEST_ASSERT_NULL(g_malloc.tiny_blocks);
+	TEST_ASSERT_NULL(g_malloc.heap_small);
+	TEST_ASSERT_NULL(g_malloc.heap_tiny);
 }
 
 void can_allocate_100_times(void)
@@ -73,7 +73,7 @@ void can_allocate_100_times(void)
 	{
 		ft_free(blocks[i]);
 	}
-	TEST_ASSERT_NULL(g_malloc.tiny_blocks);
+	TEST_ASSERT_NULL(g_malloc.heap_tiny);
 }
 
 void cannot_allocate_1000_times(void)
@@ -88,7 +88,7 @@ void cannot_allocate_1000_times(void)
 	{
 		ft_free(blocks[i]);
 	}
-	TEST_ASSERT_NULL(g_malloc.tiny_blocks);
+	TEST_ASSERT_NULL(g_malloc.heap_tiny);
 }
 
 // not needed when using generate_test_runner.rb

@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 16:17:40 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/30 10:39:32 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ void should_init_successfully(void)
 {
 	init_malloc();
 	TEST_ASSERT_EQUAL_INT(1, g_malloc.initialized);
-	TEST_ASSERT_NULL(g_malloc.tiny_blocks);
-	TEST_ASSERT_NULL(g_malloc.small_blocks);
-	TEST_ASSERT_NULL(g_malloc.large_blocks);
+	TEST_ASSERT_NULL(g_malloc.heap_tiny);
+	TEST_ASSERT_NULL(g_malloc.heap_small);
+	TEST_ASSERT_NULL(g_malloc.heap_large);
 	TEST_ASSERT_EQUAL_INT(getpagesize(), g_malloc.page_size);
 }
 
@@ -74,9 +74,9 @@ void allocate_and_free_resets_heaps(void)
 	ft_free(tiny);
 	ft_free(small);
 	ft_free(large);
-	TEST_ASSERT_NULL(g_malloc.tiny_blocks);
-	TEST_ASSERT_NULL(g_malloc.small_blocks);
-	TEST_ASSERT_NULL(g_malloc.large_blocks);
+	TEST_ASSERT_NULL(g_malloc.heap_tiny);
+	TEST_ASSERT_NULL(g_malloc.heap_small);
+	TEST_ASSERT_NULL(g_malloc.heap_large);
 }
 
 

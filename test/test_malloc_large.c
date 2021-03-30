@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 16:17:11 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/30 10:39:29 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void free_all_sets_heap_null(void)
 	ft_strncpy(block, "hello world", 12);
 	TEST_ASSERT_NOT_NULL(block);
 	ft_free(block);
-	TEST_ASSERT_NULL(g_malloc.large_blocks);
+	TEST_ASSERT_NULL(g_malloc.heap_large);
 }
 
 void can_allocate_100_times(void)
@@ -68,7 +68,7 @@ void can_allocate_100_times(void)
 	{
 		ft_free(blocks[i]);
 	}
-	TEST_ASSERT_NULL(g_malloc.large_blocks);
+	TEST_ASSERT_NULL(g_malloc.heap_large);
 }
 
 void can_allocate_1000_times(void)
@@ -83,7 +83,7 @@ void can_allocate_1000_times(void)
 	{
 		ft_free(blocks[i]);
 	}
-	TEST_ASSERT_NULL(g_malloc.large_blocks);
+	TEST_ASSERT_NULL(g_malloc.heap_large);
 }
 
 int main(void)

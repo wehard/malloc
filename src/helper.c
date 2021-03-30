@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 16:26:00 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 16:26:22 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/03/30 10:39:32 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,21 @@ int	ptr_is_valid(void *ptr)
 {
 	t_block	*cur;
 
-	cur = g_malloc.tiny_blocks;
+	cur = g_malloc.heap_tiny;
 	while (cur)
 	{
 		if (cur->data && cur->data == ptr)
 			return (TRUE);
 		cur = cur->next;
 	}
-	cur = g_malloc.small_blocks;
+	cur = g_malloc.heap_small;
 	while (cur)
 	{
 		if (cur->data && cur->data == ptr)
 			return (TRUE);
 		cur = cur->next;
 	}
-	cur = g_malloc.large_blocks;
+	cur = g_malloc.heap_large;
 	while (cur)
 	{
 		if (cur->data && cur->data == ptr)
