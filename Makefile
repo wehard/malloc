@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/03/30 14:50:34 by wkorande         ###   ########.fr        #
+#    Updated: 2021/04/01 13:12:29 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-NAME = libft_malloc_$(HOSTTYPE).so
+NAME = libft_malloc.so
+HOSTNAME = libft_malloc_$(HOSTTYPE).so
 
 BLACK=\033[30m
 RED=\033[0;31m
@@ -57,7 +58,12 @@ CC = clang
 
 all: $(NAME)
 
-$(NAME):
+$(NAME): $(HOSTNAME)
+	@printf "$(CYAN)Creating symlink $(NAME) -> $(HOSTNAME)\n"
+	@ln -fs $(HOSTNAME) $(NAME)
+	@printf "done$(NORMAL)\n"
+
+$(HOSTNAME):
 	@make -C libft
 	@printf "$(BOLDYELLOW)%s$(NORMAL)\n" "Making $(NAME)"
 	@$(CC) $(CFLAGS) $(INCL) -c $(SRCS) 
@@ -68,18 +74,19 @@ $(NAME):
 debug:
 	@make debug -C libft
 	@printf "$(BOLDYELLOW)%s$(NORMAL)\n" "Making $(NAME)"
-	@$(CC) -g $(CFLAGS) $(INCL) -c $(SRCS) 
+	@$(CC) -g $(CFLAGS) $(INCL) -c $(SRCS) s
 	@ar rc $(NAME) $(OUT)
 	@ranlib $(NAME)
 	@printf "$(YELLOW)%s$(NORMAL)\n" "done"
 
 clean:
-	@make clean -C libft
+	#@make clean -C libft
 	@rm -rf $(OUT)
 
 fclean: clean
 	@rm -f $(NAME)
-	@make fclean -C libft
+	#@make fclean -C libft
+	@rm -f $(HOSTNAME)
 
 re: fclean all
 
