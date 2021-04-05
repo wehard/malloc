@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/04/01 13:12:29 by wkorande         ###   ########.fr        #
+#    Updated: 2021/04/05 20:35:32 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-NAME = libft_malloc.so
-HOSTNAME = libft_malloc_$(HOSTTYPE).so
+LINK = libft_malloc.so
+NAME = libft_malloc_$(HOSTTYPE).so
 
 BLACK=\033[30m
 RED=\033[0;31m
@@ -34,6 +34,7 @@ WHITE=\033[37m
 NORMAL=\033[0m
 
 SRCDIR = src
+OBJDIR = obj
 
 SRC = malloc.c\
 		free.c\
@@ -46,47 +47,38 @@ SRC = malloc.c\
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRC))
 
-OUT =  $(notdir $(SRCS:.c=.o))
+OBJS = $(SRC:%.c=$(OBJDIR)/%.o)
 
 INCL = -I libft/includes/ -I include
 
 LIB = -L libft -lft
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fPIC
 
-CC = clang
+CC = gcc
 
 all: $(NAME)
 
-$(NAME): $(HOSTNAME)
-	@printf "$(CYAN)Creating symlink $(NAME) -> $(HOSTNAME)\n"
-	@ln -fs $(HOSTNAME) $(NAME)
+$(NAME): $(OBJS)
+	@printf "$(YELLOW)Creating $(NAME)..."
+	@$(CC) -shared -o $@ $(OBJS)
+	@printf "done$(NORMAL)\n"
+	@printf "$(CYAN)Creating symlink $(LINK) -> $(NAME)..."
+	@ln -fs $(NAME) $(LINK)
 	@printf "done$(NORMAL)\n"
 
-$(HOSTNAME):
-	@make -C libft
-	@printf "$(BOLDYELLOW)%s$(NORMAL)\n" "Making $(NAME)"
-	@$(CC) $(CFLAGS) $(INCL) -c $(SRCS) 
-	@ar rc $(NAME) $(OUT)
-	@ranlib $(NAME)
-	@printf "$(YELLOW)%s$(NORMAL)\n" "done"
-
-debug:
-	@make debug -C libft
-	@printf "$(BOLDYELLOW)%s$(NORMAL)\n" "Making $(NAME)"
-	@$(CC) -g $(CFLAGS) $(INCL) -c $(SRCS) s
-	@ar rc $(NAME) $(OUT)
-	@ranlib $(NAME)
-	@printf "$(YELLOW)%s$(NORMAL)\n" "done"
-
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(OBJDIR)
+	@$(CC) -c -o $@ $(CFLAGS) $^ -O0 -g $(INCL)
+	
 clean:
-	#@make clean -C libft
-	@rm -rf $(OUT)
+	@make clean -C libft
+	@rm -rf $(OBJDIR)
 
 fclean: clean
 	@rm -f $(NAME)
-	#@make fclean -C libft
-	@rm -f $(HOSTNAME)
+	@make fclean -C libft
+	@rm -f $(LINK)
 
 re: fclean all
 
@@ -94,4 +86,4 @@ run:
 	$(CC) $(CFLAGS) $(INCL) $(SRCS) $(LIB) -o $(NAME)
 	./RT resources/scenes/simple.csv
 
-.PHONY: all libftmake clean fclean re run debug
+.PHONY: all clean fclean re

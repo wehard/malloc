@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:05:16 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 10:39:32 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/04/05 20:36:33 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ static void	unmap_heap(t_block **area)
 static int	release_block(void *ptr, t_block **area)
 {
 	t_block	*cur;
-	t_block	*prev;
+	// t_block	*prev;
 
 	cur = *area;
-	prev = NULL;
+	// prev = NULL;
 	while (cur)
 	{
 		if (cur->data && cur->data == ptr)
@@ -45,7 +45,7 @@ static int	release_block(void *ptr, t_block **area)
 			}
 			return (TRUE);
 		}
-		prev = cur;
+		// prev = cur;
 		cur = cur->next;
 	}
 	return (FALSE);

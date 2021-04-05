@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 16:26:43 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 10:39:32 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/04/05 20:37:06 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,14 @@ void	*allocate_large(size_t size)
 {
 	t_block	*new;
 	t_block	*cur;
-	t_block	*prev;
+	// t_block	*prev;
 
 	cur = g_malloc.heap_large;
-	prev = NULL;
+	// prev = NULL;
 	new = NULL;
 	while (cur && cur->next)
 	{
-		prev = cur;
+		// prev = cur;
 		cur = cur->next;
 	}
 	new = create_heap(size + sizeof(t_block));
