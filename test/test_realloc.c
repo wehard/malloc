@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/05/13 14:22:03 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 15:51:44 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void realloc_tiny_shrink(void)
 	TEST_ASSERT_NOT_NULL(tiny);
 	void *shrunk = realloc(tiny, TINY_ALLOC_SIZE / 2);
 	TEST_ASSERT_NOT_NULL(shrunk);
+	TEST_ASSERT_EQUAL_PTR(tiny, shrunk);
 	free(tiny);
-	free(shrunk);
 }
 
 void realloc_tiny_grow(void)

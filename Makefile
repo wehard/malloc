@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/05/13 14:15:50 by wkorande         ###   ########.fr        #
+#    Updated: 2021/05/13 15:57:31 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,15 +48,14 @@ SRC = block.c\
 		malloc.c\
 		print_memory.c\
 		realloc.c\
-		show_alloc_mem.c
+		show_alloc_mem.c\
+		ft_bzero.c
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRC))
 
 OBJS = $(SRC:%.c=$(OBJDIR)/%.o)
 
 INCL = -I include
-
-LIB = #-L libft -lft
 
 CFLAGS = -Wall -Wextra -Werror -fPIC
 
