@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/04/05 20:35:32 by wkorande         ###   ########.fr        #
+#    Updated: 2021/05/13 14:00:59 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,9 +49,10 @@ SRCS = $(addprefix $(SRCDIR)/, $(SRC))
 
 OBJS = $(SRC:%.c=$(OBJDIR)/%.o)
 
-INCL = -I libft/includes/ -I include
+#INCL = -I libft/includes/ -I include
+INCL = -I include
 
-LIB = -L libft -lft
+LIB = #-L libft -lft
 
 CFLAGS = -Wall -Wextra -Werror -fPIC
 

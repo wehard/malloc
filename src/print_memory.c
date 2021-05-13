@@ -6,12 +6,12 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/26 21:23:28 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 14:17:15 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 14:09:52 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "ft_printf.h"
+#include <stdio.h>
 
 void	print_memory(const void *addr, size_t size)
 {
@@ -22,7 +22,7 @@ void	print_memory(const void *addr, size_t size)
 	i = 0;
 	while (i < size)
 	{
-		ft_printf("%02hhX ", ptr[i]);
+		printf("%02hhX ", ptr[i]);
 		i++;
 	}
 }

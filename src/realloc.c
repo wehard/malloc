@@ -6,13 +6,12 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:05:38 by wkorande          #+#    #+#             */
-/*   Updated: 2021/05/13 13:23:09 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 14:05:16 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 #include "malloc_internal.h"
-#include "libft.h"
 
 // TODO: thread safety
 

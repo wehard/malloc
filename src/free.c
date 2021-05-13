@@ -6,27 +6,24 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:05:16 by wkorande          #+#    #+#             */
-/*   Updated: 2021/05/13 13:23:09 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 14:04:58 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc_internal.h"
-#include "ft_printf.h"
 #include <sys/mman.h>
 
 static void	unmap_heap(t_block **area)
 {
 	if (munmap((void *)*area, (*area)->size + sizeof(t_block) != 0))
-		ft_printf("failed to unmap\n");
+		ft_putstr_fd("failed to unmap\n", 2);
 }
 
 static int	release_block(void *ptr, t_block **area)
 {
 	t_block	*cur;
-	// t_block	*prev;
 
 	cur = *area;
-	// prev = NULL;
 	while (cur)
 	{
 		if (cur->data && cur->data == ptr)
@@ -45,7 +42,6 @@ static int	release_block(void *ptr, t_block **area)
 			}
 			return (TRUE);
 		}
-		// prev = cur;
 		cur = cur->next;
 	}
 	return (FALSE);
