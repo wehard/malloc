@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 16:12:41 by wkorande          #+#    #+#             */
-/*   Updated: 2021/05/13 14:29:03 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 16:01:38 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,11 @@ void	*allocate_large(size_t size);
 
 int		ptr_is_valid(void *ptr);
 
-
 void	ft_putstr_fd(char const *s, int fd);
 size_t	ft_strlen(const char *s);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putchar(char c);
 void	ft_bzero(void *s, size_t n);
-
 
 #endif

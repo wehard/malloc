@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:05:38 by wkorande          #+#    #+#             */
-/*   Updated: 2021/05/13 14:05:16 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 16:00:32 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 void	*realloc(void *ptr, size_t size)
 {
-	t_block *block;
+	t_block	*block;
 	void	*new;
 
 	if (!ptr || !size)
@@ -30,7 +30,8 @@ void	*realloc(void *ptr, size_t size)
 		block->size = size;
 		return (ptr);
 	}
-	if (!(new = malloc(align_size(size))))
+	new = malloc(align_size(size));
+	if (!new)
 		return (NULL);
 	ft_memcpy(new, ptr, block->size);
 	free(ptr);
