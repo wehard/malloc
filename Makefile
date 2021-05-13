@@ -6,7 +6,7 @@
 #    By: wkorande <willehard@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/01 15:48:04 by rjaakonm          #+#    #+#              #
-#    Updated: 2021/05/13 14:00:59 by wkorande         ###   ########.fr        #
+#    Updated: 2021/05/13 14:15:50 by wkorande         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,20 +36,24 @@ NORMAL=\033[0m
 SRCDIR = src
 OBJDIR = obj
 
-SRC = malloc.c\
+SRC = block.c\
 		free.c\
-		realloc.c\
+		ft_memcpy.c\
+		ft_putchar.c\
+		ft_putchar_fd.c\
+		ft_putstr_fd.c\
+		ft_strlen.c\
 		heap.c\
-		block.c\
 		helper.c\
-		show_alloc_mem.c\
+		malloc.c\
 		print_memory.c\
+		realloc.c\
+		show_alloc_mem.c
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRC))
 
 OBJS = $(SRC:%.c=$(OBJDIR)/%.o)
 
-#INCL = -I libft/includes/ -I include
 INCL = -I include
 
 LIB = #-L libft -lft
@@ -73,12 +77,10 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@$(CC) -c -o $@ $(CFLAGS) $^ -O0 -g $(INCL)
 	
 clean:
-	@make clean -C libft
 	@rm -rf $(OBJDIR)
 
 fclean: clean
 	@rm -f $(NAME)
-	@make fclean -C libft
 	@rm -f $(LINK)
 
 re: fclean all

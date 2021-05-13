@@ -6,14 +6,14 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/05/13 13:23:09 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 14:19:53 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "unity.h"
 #include "malloc.h"
 #include "malloc_internal.h"
-#include "libft.h"
+#include <string.h>
 
 void setUp(void)
 {
@@ -26,7 +26,7 @@ void tearDown(void)
 void single_allocation(void)
 {
 	char *block = (char *)malloc(SMALL_ALLOC_SIZE);
-	ft_strncpy(block, "hello world", 12);
+	strncpy(block, "hello world", 12);
 	TEST_ASSERT_NOT_NULL(block);
 	TEST_ASSERT_EQUAL_CHAR('h', block[0]);
 	TEST_ASSERT_EQUAL_CHAR('d', block[10]);
@@ -46,7 +46,7 @@ void verify_alloc_info(void)
 void free_all_sets_heap_null(void)
 {
 	char *block = (char *)malloc(SMALL_ALLOC_SIZE);
-	ft_strncpy(block, "hello world", 12);
+	strncpy(block, "hello world", 12);
 	TEST_ASSERT_NOT_NULL(block);
 	free(block);
 	TEST_ASSERT_NULL(g_malloc.heap_small);

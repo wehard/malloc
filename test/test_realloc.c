@@ -6,14 +6,13 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/05/13 13:23:09 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 14:22:03 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "unity.h"
 #include "malloc.h"
 #include "malloc_internal.h"
-#include "libft.h"
 
 void setUp(void)
 {

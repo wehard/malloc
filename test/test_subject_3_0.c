@@ -6,15 +6,14 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/05/13 13:23:09 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 14:21:09 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "unity.h"
 #include "malloc.h"
 #include "malloc_internal.h"
-#include "libft.h"
-#include <unistd.h>
+#include <string.h>
 
 #define M (1024*1024)
 
@@ -26,11 +25,6 @@ void tearDown(void)
 {
 }
 
-void print(char *s)
-{
-	write(1, s, strlen(s));
-}
-
 void test3(void)
 {
 	char *addr1;
@@ -38,11 +32,11 @@ void test3(void)
 
 	addr1 = (char *)malloc(16*M);
 	strcpy(addr1, "Bonjours\n");
-	print(addr1);
+	ft_putstr_fd(addr1, 1);
 	TEST_ASSERT_EQUAL_STRING(addr1, "Bonjours\n");
 	addr3 = (char *)realloc(addr1, 128 * M);
 	// addr3[127 * M] = 42;
-	print(addr3);
+	ft_putstr_fd(addr3, 1);
 	TEST_ASSERT_EQUAL_STRING(addr3, "Bonjours\n");
 }
 
