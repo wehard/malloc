@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 11:17:54 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 13:23:09 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void tearDown(void)
 
 void single_allocation(void)
 {
-	char *block = (char *)ft_malloc(SMALL_ALLOC_SIZE);
+	char *block = (char *)malloc(SMALL_ALLOC_SIZE);
 	ft_strncpy(block, "hello world", 12);
 	TEST_ASSERT_NOT_NULL(block);
 	TEST_ASSERT_EQUAL_CHAR('h', block[0]);
@@ -34,7 +34,7 @@ void single_allocation(void)
 
 void verify_alloc_info(void)
 {
-	void *ptr = ft_malloc(SMALL_ALLOC_SIZE);
+	void *ptr = malloc(SMALL_ALLOC_SIZE);
 	t_block *block = ptr - sizeof(t_block);
 
 	TEST_ASSERT_NOT_NULL(ptr);
@@ -45,17 +45,17 @@ void verify_alloc_info(void)
 
 void free_all_sets_heap_null(void)
 {
-	char *block = (char *)ft_malloc(SMALL_ALLOC_SIZE);
+	char *block = (char *)malloc(SMALL_ALLOC_SIZE);
 	ft_strncpy(block, "hello world", 12);
 	TEST_ASSERT_NOT_NULL(block);
-	ft_free(block);
+	free(block);
 	TEST_ASSERT_NULL(g_malloc.heap_small);
 }
 
 void tiny_allocation_does_not_affect_small_heap(void)
 {
-	char *block = (char*)ft_malloc(TINY_ALLOC_SIZE);
-	ft_free(block);
+	char *block = (char*)malloc(TINY_ALLOC_SIZE);
+	free(block);
 	TEST_ASSERT_NULL(g_malloc.heap_small);
 }
 
@@ -64,12 +64,12 @@ void can_allocate_100_times(void)
 	void *blocks[100];
 	for (int i = 0; i < 100; i++)
 	{
-		blocks[i] = ft_malloc(SMALL_ALLOC_SIZE);
+		blocks[i] = malloc(SMALL_ALLOC_SIZE);
 	}
 	TEST_ASSERT_NOT_NULL(blocks[99]);
 	for (int i = 0; i < 100; i++)
 	{
-		ft_free(blocks[i]);
+		free(blocks[i]);
 	}
 	TEST_ASSERT_NULL(g_malloc.heap_small);
 }
@@ -79,12 +79,12 @@ void can_allocate_1024_times(void)
 	void *blocks[1024];
 	for (int i = 0; i < 1024; i++)
 	{
-		blocks[i] = ft_malloc(SMALL_ALLOC_SIZE);
+		blocks[i] = malloc(SMALL_ALLOC_SIZE);
 	}
 	TEST_ASSERT_NOT_NULL(blocks[1023]);
 	for (int i = 0; i < 1024; i++)
 	{
-		ft_free(blocks[i]);
+		free(blocks[i]);
 	}
 	TEST_ASSERT_NULL(g_malloc.heap_tiny);
 }

@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/29 16:17:20 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 13:23:09 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,18 @@ void tearDown(void)
 
 void should_init_mutex(void)
 {
-	void *ptr = ft_malloc(TINY_ALLOC_SIZE);
+	void *ptr = malloc(TINY_ALLOC_SIZE);
 
 	int ret = pthread_mutex_lock(&g_malloc_mutex);
 	TEST_ASSERT_EQUAL_INT(0, ret);
 	pthread_mutex_unlock(&g_malloc_mutex);
-	ft_free(ptr);
+	free(ptr);
 }
 
 static void *malloc_thread(void *arg)
 {
 	arg = 0;
-	void *p = ft_malloc(TINY_ALLOC_SIZE);
+	void *p = malloc(TINY_ALLOC_SIZE);
 	return p;
 }
 
@@ -74,7 +74,7 @@ void should_allocate_when_call_from_thread(void)
 	while (i < num_threads)
 	{
 		TEST_ASSERT_EQUAL_INT(TRUE, ptr_is_valid(ptrs[i]));
-		ft_free(ptrs[i]);
+		free(ptrs[i]);
 		i++;
 	}
 }

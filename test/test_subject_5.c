@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 11:56:19 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 13:23:09 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void tearDown(void)
 
 void test5(void)
 {
-	ft_malloc(1024);
-	ft_malloc(1024 * 32);
-	ft_malloc(1024 * 1024);
-	ft_malloc(1024 * 1024 * 16);
-	ft_malloc(1024 * 1024 * 128);
+	malloc(1024);
+	malloc(1024 * 32);
+	malloc(1024 * 1024);
+	malloc(1024 * 1024 * 16);
+	malloc(1024 * 1024 * 128);
 	show_alloc_mem();
 }
 

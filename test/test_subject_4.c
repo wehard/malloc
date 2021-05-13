@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 15:20:18 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 13:23:09 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void test4(void)
 {
 	char *addr;
 
-	addr = (char *)ft_malloc(16);
-	ft_free(NULL);
-	ft_free((void *)addr + 5);
-	if (ft_realloc((void *)addr + 5, 10) == NULL)
+	addr = (char *)malloc(16);
+	free(NULL);
+	free((void *)addr + 5);
+	if (realloc((void *)addr + 5, 10) == NULL)
 		print("Bonjours\n");
 	else
 		TEST_FAIL();

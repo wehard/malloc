@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:05:38 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 15:17:09 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 13:23:09 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 // TODO: thread safety
 
-void	*ft_realloc(void *ptr, size_t size)
+void	*realloc(void *ptr, size_t size)
 {
 	t_block *block;
 	void	*new;
@@ -31,9 +31,9 @@ void	*ft_realloc(void *ptr, size_t size)
 		block->size = size;
 		return (ptr);
 	}
-	if (!(new = ft_malloc(align_size(size))))
+	if (!(new = malloc(align_size(size))))
 		return (NULL);
 	ft_memcpy(new, ptr, block->size);
-	ft_free(ptr);
+	free(ptr);
 	return (new);
 }

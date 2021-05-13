@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:03:29 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 10:39:27 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 13:23:09 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	init_malloc(void)
 	pthread_mutex_init(&g_malloc_mutex, NULL);
 }
 
-void	*ft_malloc(size_t size)
+void	*malloc(size_t size)
 {
 	void	*ptr;
 

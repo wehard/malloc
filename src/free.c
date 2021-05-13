@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/24 14:05:16 by wkorande          #+#    #+#             */
-/*   Updated: 2021/04/05 20:36:33 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 13:23:09 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int	release_large_block(void *ptr, t_block **area)
 	return (FALSE);
 }
 
-void	ft_free(void *ptr)
+void	free(void *ptr)
 {
 	if (!ptr)
 		return ;

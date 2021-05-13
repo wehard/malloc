@@ -6,7 +6,7 @@
 /*   By: wkorande <willehard@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 16:43:01 by wkorande          #+#    #+#             */
-/*   Updated: 2021/03/30 10:39:32 by wkorande         ###   ########.fr       */
+/*   Updated: 2021/05/13 13:23:09 by wkorande         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void tearDown(void)
 
 void should_get_valid_pointer(void)
 {
-	void *ptr = ft_malloc(TINY_ALLOC_SIZE);
+	void *ptr = malloc(TINY_ALLOC_SIZE);
 	TEST_ASSERT_EQUAL_INT(1, ptr_is_valid(ptr));
-	ft_free(ptr);
+	free(ptr);
 }
 
 void should_get_invalid_pointer_when_pointer_not_allocated(void)
@@ -53,27 +53,27 @@ void should_init_successfully(void)
 
 void should_initialize_when_called_once(void)
 {
-	void *ptr = ft_malloc(TINY_ALLOC_SIZE);
+	void *ptr = malloc(TINY_ALLOC_SIZE);
 	TEST_ASSERT_EQUAL_INT(1, g_malloc.initialized);
-	ft_free(ptr);
+	free(ptr);
 }
 
 void should_reset_initialized_when_all_freed(void)
 {
-	void *ptr = ft_malloc(TINY_ALLOC_SIZE);
+	void *ptr = malloc(TINY_ALLOC_SIZE);
 	TEST_ASSERT_EQUAL_INT(1, g_malloc.initialized);
-	ft_free(ptr);
+	free(ptr);
 	TEST_ASSERT_EQUAL_INT(0, g_malloc.initialized);
 }
 
 void allocate_and_free_resets_heaps(void)
 {
-	void *tiny = ft_malloc(TINY_ALLOC_SIZE);
-	void *small = ft_malloc(SMALL_ALLOC_SIZE);
-	void *large = ft_malloc(SMALL_ALLOC_SIZE + 128);
-	ft_free(tiny);
-	ft_free(small);
-	ft_free(large);
+	void *tiny = malloc(TINY_ALLOC_SIZE);
+	void *small = malloc(SMALL_ALLOC_SIZE);
+	void *large = malloc(SMALL_ALLOC_SIZE + 128);
+	free(tiny);
+	free(small);
+	free(large);
 	TEST_ASSERT_NULL(g_malloc.heap_tiny);
 	TEST_ASSERT_NULL(g_malloc.heap_small);
 	TEST_ASSERT_NULL(g_malloc.heap_large);
