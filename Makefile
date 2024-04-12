@@ -33,10 +33,16 @@ BOLDCYAN=\033[1;36m
 WHITE=\033[37m
 NORMAL=\033[0m
 
-SRCDIR = src
-OBJDIR = obj
+CC = gcc
 
-SRC = block.c\
+# ----------------------------------------
+#                LIBRARY
+# ----------------------------------------
+
+LIB_SRCDIR = src
+LIB_OBJDIR = obj
+
+LIB_SRC = block.c\
 		free.c\
 		ft_memcpy.c\
 		ft_putchar.c\
@@ -51,32 +57,60 @@ SRC = block.c\
 		show_alloc_mem.c\
 		ft_bzero.c
 
-SRCS = $(addprefix $(SRCDIR)/, $(SRC))
+LIB_SRCS = $(addprefix $(LIB_SRCDIR)/, $(LIB_SRC))
+LIB_OBJS = $(LIB_SRC:%.c=$(LIB_OBJDIR)/%.o)
+LIB_INCLUDE = -I include
+LIB_CFLAGS = -Wall -Wextra -Werror -fPIC
 
-OBJS = $(SRC:%.c=$(OBJDIR)/%.o)
+# ----------------------------------------
+#                TESTS
+# ----------------------------------------
 
-INCL = -I include
+UNITY_SRC = ./vendor/Unity/src/*.c
+TEST_DIR = test
+TEST_SRCS = $(wildcard $(TEST_DIR)/*.c)
+TEST_TARGETS = $(patsubst $(TEST_DIR)/%.c,$(TEST_DIR)/%,$(TEST_SRCS))
+TEST_DSYM =  $(patsubst $(TEST_DIR)/%.c,$(TEST_DIR)/%.dSYM,$(TEST_SRCS))
 
-CFLAGS = -Wall -Wextra -Werror -fPIC
+TEST_INCL = -I include -I vendor/Unity/src
+TEST_CFLAGS = -g -O0 #-Wall -Wextra -Werror
 
-CC = gcc
+# ----------------------------------------
+#                RULES
+# ----------------------------------------
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(LIB_OBJS)
 	@printf "$(YELLOW)Creating $(NAME)..."
-	@$(CC) -shared -o $@ $(OBJS)
+	@$(CC) -shared -o $@ $(LIB_OBJS)
 	@printf "done$(NORMAL)\n"
 	@printf "$(CYAN)Creating symbolic link: $(LINK) -> $(NAME)..."
 	@ln -fs $(NAME) $(LINK)
 	@printf "done$(NORMAL)\n"
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	@mkdir -p $(OBJDIR)
-	@$(CC) -c -o $@ $(CFLAGS) $^ -O0 -g $(INCL)
+$(LIB_OBJDIR)/%.o: $(LIB_SRCDIR)/%.c
+	@mkdir -p $(LIB_OBJDIR)
+	@$(CC) -c -o $@ $(LIB_CFLAGS) $^ -O0 -g $(LIB_INCLUDE)
 	
+
+test: re $(TEST_TARGETS)
+	@printf "\n$(BOLDBLUE)--- BEGIN TESTS ---$(BLUE)\n"
+	@for test in $(TEST_TARGETS); do ./$$test | tee $$test.testpass; printf "\n" || (printf "$(BOLDRED)$$test$(NORMAL)"); done
+	@printf "\n$(BOLDBLUE)--- END TESTS ---$(NORMAL)\n"
+	@ruby ./vendor/Unity/auto/unity_test_summary.rb $(TEST_DIR)/.
+
+$(TEST_TARGETS): %: %.c
+	@printf "Compiling $@..."
+	@$(CC) $(TEST_CFLAGS) $(TEST_INCL) $(UNITY_SRC) -o $@ $< -L . -lft_malloc -lpthread
+	@printf "done\n"
+
 clean:
-	@rm -rf $(OBJDIR)
+	@rm -rf $(LIB_OBJDIR)
+	@rm -f $(TEST_TARGETS)
+	@rm -rf $(TEST_DSYM)
+	@rm -f $(TEST_DIR)/*.testpass
+	@rm -f $(TEST_DIR)/*.testfail
 
 fclean: clean
 	@rm -f $(NAME)
