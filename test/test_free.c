@@ -32,10 +32,10 @@ void	free_null_does_not_fail(void)
 
 void	free_garbage_ptr_does_not_fail(void)
 {
-	int	ptr;
+	int	*ptr;
 
-	ptr = 0xDEADBEEF;
-	free(&ptr);
+	*ptr = 0xDEADBEEF;
+	free(ptr);
 }
 
 void	realloc_tiny(void)

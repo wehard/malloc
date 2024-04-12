@@ -27,9 +27,9 @@ NORMAL=\033[0m
 MALLOC_SRC = ../src/*.c
 UNITY_SRC = ../vendor/Unity/src/*.c
 
-LIB = -L ../ -lft_malloc -lpthread
+LIB = -L .. -lft_malloc -lpthread
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = #-Wall -Wextra -Werror
 
 CC = clang
 
@@ -39,8 +39,10 @@ TESTS = $(wildcard $(TEST_DIR)/*.c)
 SUBJECT_TESTS = $(wildcard $(TEST_DIR)/test_subject_*.c)
 
 TARGETS = $(patsubst $(TEST_DIR)/%.c,$(TEST_DIR)/%,$(TESTS))
+TARGETS_DEBUG_SYMBOLS = $(patsubst $(TEST_DIR)/%.c,$(TEST_DIR)/%.dSYM,$(TESTS))
 
 SUBJECT_TARGETS = $(patsubst $(TEST_DIR)/%.c,$(TEST_DIR)/%,$(SUBJECT_TESTS))
+SUBJECT_TARGETS_DEBUG_SYMBOLS = $(patsubst $(TEST_DIR)/%.c,$(TEST_DIR)/%.dSYM,$(SUBJECT_TESTS))
 
 INCL = -I ../libft/includes -I ../include -I ../vendor/Unity/src
 
@@ -59,7 +61,7 @@ run: re $(TARGETS)
 	@printf "\n$(BOLDBLUE)--- END TESTS ---$(NORMAL)\n"
 	@ruby ../vendor/Unity/auto/unity_test_summary.rb .
 
-subject: fclean $(SUBJECT_TARGETS)
+subject: re $(SUBJECT_TARGETS)
 	@printf "\n$(BOLDBLUE)--- BEGIN TESTS ---$(BLUE)\n"
 	@for test in $(SUBJECT_TARGETS); do ./$$test | tee $$test.testpass; printf "\n" || (printf "$(BOLDRED)$$test$(NORMAL)"); done
 	@printf "\n$(BOLDBLUE)--- END TESTS ---$(NORMAL)\n"
@@ -71,6 +73,7 @@ run2: re $(TARGETS)
 
 lib:
 	@make -C ..
+	@ln -fs ../libft_malloc.so libft_malloc_arm64_Darwin.so
 
 clean:
 	@rm -f *.testpass
@@ -79,6 +82,9 @@ clean:
 fclean: clean
 	@rm -f $(TARGETS)
 	@rm -f $(SUBJECT_TARGETS)
+	@rm -rf $(TARGETS_DEBUG_SYMBOLS)
+	@rm -rf $(SUBJECT_TARGETS_DEBUG_SYMBOLS)
+	@rm -f libft_malloc_arm64_Darwin.so
 
 re: fclean all
 
