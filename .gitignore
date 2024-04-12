@@ -1,3 +1,7 @@
 .vscode
 .idea
 vendor
+obj
+test/*.dSYM
+test/*.testpass
+test/*.testfail
