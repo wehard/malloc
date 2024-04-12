@@ -67,7 +67,7 @@ $(NAME): $(OBJS)
 	@printf "$(YELLOW)Creating $(NAME)..."
 	@$(CC) -shared -o $@ $(OBJS)
 	@printf "done$(NORMAL)\n"
-	@printf "$(CYAN)Creating symlink $(LINK) -> $(NAME)..."
+	@printf "$(CYAN)Creating symbolic link: $(LINK) -> $(NAME)..."
 	@ln -fs $(NAME) $(LINK)
 	@printf "done$(NORMAL)\n"
 
@@ -83,9 +83,5 @@ fclean: clean
 	@rm -f $(LINK)
 
 re: fclean all
-
-run:
-	$(CC) $(CFLAGS) $(INCL) $(SRCS) $(LIB) -o $(NAME)
-	./RT resources/scenes/simple.csv
 
 .PHONY: all clean fclean re
