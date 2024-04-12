@@ -101,7 +101,7 @@ test: re $(TEST_TARGETS)
 	@ruby ./vendor/Unity/auto/unity_test_summary.rb $(TEST_DIR)/.
 
 $(TEST_TARGETS): %: %.c
-	@printf "Compiling $@..."
+	@printf "%-40s" "Compiling $@..."
 	@$(CC) $(TEST_CFLAGS) $(TEST_INCL) $(UNITY_SRC) -o $@ $< -L . -lft_malloc -lpthread
 	@printf "done\n"
 
